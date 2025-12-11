@@ -1,36 +1,39 @@
 import { useParams, Link } from 'react-router-dom';
 import { useProduct } from '@hooks/useProducts';
+import type { FC } from 'react';
 
-const ProductDetailPage = () => {
+const ProductDetail: FC = () => {
   const { id } = useParams<{ id: string }>();
-  const productId = id ? parseInt(id, 10) : null;
+  const productId = Number(id);
 
-  const { data: product, isLoading, error } = useProduct(productId!);
+  const { data: product, isLoading, error } = useProduct(productId);
 
-  if (!productId) return <p>Invalid product ID.</p>;
-  if (isLoading) return <p>Loading product...</p>;
-  if (error) return <p>Error: {error.message}</p>;
-  if (!product) return <p>Product not found.</p>;
+  if (isLoading) return <p className="p-4">Loading product...</p>;
+  if (error) return <p className="p-4 text-red-500">Error: {error.message}</p>;
+  if (!product) return <p className="p-4">Product not found.</p>;
 
   return (
-    <div className="p-4">
-      <Link to="/products" className="text-blue-500 mb-4 inline-block">
+    <div className="p-4 max-w-4xl mx-auto">
+      <Link to="/products" className="text-blue-500 hover:underline mb-4 inline-block">
         &larr; Back to products
       </Link>
 
-      <div className="flex gap-6 mt-2">
-        <img src={product.image} alt={product.title} className="w-48 h-48 object-cover rounded" />
-        <div>
-          <h1 className="text-3xl font-bold">{product.title}</h1>
-          <p className="text-xl font-semibold text-green-600">${product.price}</p>
-          <p className="mt-2">{product.description}</p>
-          <p className="mt-2 text-sm text-gray-500">
-            Category: {product.category} | Rating: {product.rating.rate} ({product.rating.count} reviews)
-          </p>
+      <div className="flex flex-col md:flex-row gap-8 border rounded-lg p-6 shadow">
+        <img
+          src={product.image}
+          alt={product.title}
+          className="w-full md:w-1/3 h-64 object-contain"
+        />
+
+        <div className="flex-1 flex flex-col gap-4">
+          <h1 className="text-2xl font-bold">{product.title}</h1>
+          <p className="text-gray-700">{product.description}</p>
+          <p className="text-green-600 text-xl font-semibold">${product.price}</p>
+          <p className="text-sm text-gray-500">Category: {product.category}</p>
         </div>
       </div>
     </div>
   );
 };
 
-export default ProductDetailPage;
+export default ProductDetail;

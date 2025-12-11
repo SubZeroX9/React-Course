@@ -1,4 +1,3 @@
-// src/pages/ProductList.tsx
 import { useProducts } from '@hooks/useProducts';
 import { ProductCard } from '@lib/components/ProductCard';
 import type { FC } from 'react';

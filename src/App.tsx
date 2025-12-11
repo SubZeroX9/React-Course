@@ -1,6 +1,6 @@
 import {BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
-import ProductList from './pages/ProductList'
-import ProductDetail from './pages/ProductDetail'
+import ProductList from '@pages/ProductList'
+import ProductDetail from '@pages/ProductDetail'
 import './App.css'
 
 function App() {
