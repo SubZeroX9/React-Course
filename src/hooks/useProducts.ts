@@ -1,11 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import type { Product } from '@lib/types/Product';
 import { getProducts, getProductById } from '@lib/api/getProducts';
-
-export const queryKeys = {
-  products: () => ['products'] as const,
-  product: (id: number) => ['product', id] as const,
-};
+import { queryKeys } from '@lib/utils/queryKeys';
 
 export const useProducts = () => {
   return useQuery<Product[], Error>({
@@ -14,7 +10,7 @@ export const useProducts = () => {
   });
 };
 
-export const useProductsById = (id: number) => {
+export const useProduct = (id: number) => {
   return useQuery<Product, Error>({
     queryKey: queryKeys.product(id),
     queryFn: () => getProductById(id),
