@@ -2,14 +2,17 @@ import { api } from "@lib/api/client";
 import type { Product } from "@lib/types/Product";
 import type { PaginatedResponse } from "@lib/types/PaginatedResponse";
 
-export interface PaginationParams {
+export interface ProductsParams {
   limit?: number;
   skip?: number;
+  search?: string;
 }
 
-export const getProducts = async (params?: PaginationParams): Promise<PaginatedResponse<Product>> => {
-  const { limit = 10, skip = 0 } = params ?? {};
-  const { data } = await api.get<PaginatedResponse<Product>>(`/products?limit=${limit}&skip=${skip}`);
+export const getProducts = async (params?: ProductsParams): Promise<PaginatedResponse<Product>> => {
+  const { limit = 8, skip = 0, search } = params ?? {};
+  const endpoint = search ? '/products/search' : '/products';
+  const searchParam = search ? `&q=${encodeURIComponent(search)}` : '';
+  const { data } = await api.get<PaginatedResponse<Product>>(`${endpoint}?limit=${limit}&skip=${skip}${searchParam}`);
   return data;
 };
 
