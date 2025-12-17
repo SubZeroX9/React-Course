@@ -1,4 +1,4 @@
 export const queryKeys = {
-  products: () => ['products'] as const,
+  products: (page?: number, limit?: number) => ['products', { page, limit }] as const,
   product: (id: number) => ['product', id] as const,
 };
