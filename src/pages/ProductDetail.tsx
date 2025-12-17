@@ -20,7 +20,7 @@ const ProductDetail: FC = () => {
 
       <div className="flex flex-col md:flex-row gap-8 border rounded-lg p-6 shadow">
         <img
-          src={product.image}
+          src={product.images[0] || product.thumbnail}
           alt={product.title}
           className="w-full md:w-1/3 h-64 object-contain"
         />

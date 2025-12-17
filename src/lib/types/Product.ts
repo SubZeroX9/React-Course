@@ -4,11 +4,10 @@ export interface Product {
   price: number
   description: string
   category: string
-  image: string
-  rating: ProductRating
-}
-
-export interface ProductRating {
-  rate: number
-  count: number
+  thumbnail: string
+  images: string[]
+  rating: number
+  brand?: string
+  stock?: number
+  discountPercentage?: number
 }

@@ -16,7 +16,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       className="block border rounded-lg p-4 hover:shadow-lg transition-shadow duration-200"
     >
       <img
-        src={product.image}
+        src={product.thumbnail}
         alt={product.title}
         className="w-full h-48 object-contain mb-4"
       />
