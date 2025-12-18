@@ -29,32 +29,32 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     <Link
       to={`/products/${product.id}`}
       onMouseEnter={() => prefetchProduct(product.id)}
-      className="flex flex-col h-full border rounded-lg p-4 hover:shadow-lg transition-shadow duration-200 relative"
+      className="flex flex-col h-full border rounded-lg p-3 hover:shadow-lg transition-shadow duration-200 relative"
     >
       {hasDiscount && (
-        <span className="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+        <span className="absolute top-1.5 right-1.5 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">
           -{Math.round(product.discountPercentage!)}%
         </span>
       )}
       <img
         src={product.thumbnail}
         alt={product.title}
-        className="w-full h-48 object-contain mb-4"
+        className="w-full h-32 object-contain mb-2"
       />
-      <h2 className="text-lg font-semibold mb-1 line-clamp-2 min-h-[3.5rem]">{product.title}</h2>
-      <div className="flex justify-center mb-2">
+      <h2 className="text-sm font-semibold mb-1 line-clamp-2 min-h-[2.5rem] text-center">{product.title}</h2>
+      <div className="flex justify-center mb-1">
         <StarRating rating={product.rating} />
       </div>
-      <div className="flex items-center justify-center gap-2 mb-2">
-        <span className="text-green-600 font-bold">${product.price}</span>
+      <div className="flex items-center justify-center gap-1.5 mb-1">
+        <span className="text-green-600 font-bold text-sm">${product.price}</span>
         {originalPrice && (
-          <span className="text-gray-400 text-sm line-through">${originalPrice}</span>
+          <span className="text-gray-400 text-xs line-through">${originalPrice}</span>
         )}
       </div>
-      <div className="mt-auto">
+      <div className="mt-auto flex justify-center">
         {product.availabilityStatus && (
           <span
-            className={`text-xs font-medium px-2 py-0.5 rounded ${getAvailabilityStyle(product.availabilityStatus)}`}
+            className={`text-[10px] font-medium px-1.5 py-0.5 rounded ${getAvailabilityStyle(product.availabilityStatus)}`}
           >
             {product.availabilityStatus}
           </span>

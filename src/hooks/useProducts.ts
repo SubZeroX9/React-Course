@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import type { Product, ProductSummary } from '@lib/types/Product';
 import type { PaginatedResponse } from '@lib/types/PaginatedResponse';
 import { getProducts, getProductById } from '@lib/api/getProducts';
@@ -9,6 +9,7 @@ export const useProducts = (page: number = 1, limit: number = 8, search?: string
   return useQuery<PaginatedResponse<ProductSummary>, Error>({
     queryKey: queryKeys.products(page, limit, search, category),
     queryFn: () => getProducts({ limit, skip, search, category }),
+    placeholderData: keepPreviousData,
   });
 };
 

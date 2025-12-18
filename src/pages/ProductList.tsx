@@ -1,6 +1,8 @@
 import { useProducts } from '@hooks/useProducts';
 import { useCategories } from '@hooks/useCategories';
 import { ProductCard } from '@lib/components/ProductCard';
+import { FilterSidebar } from '@lib/components/FilterSidebar';
+import { useSidebar } from '@hooks/useSidebar';
 import { useState, type FC } from 'react';
 
 const PAGE_SIZE_OPTIONS = [4, 8, 12] as const;
@@ -13,8 +15,9 @@ const ProductList: FC = () => {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('');
 
+  const { isOpen } = useSidebar();
   const { data: categories, isLoading: categoriesLoading } = useCategories();
-  const { data, isLoading, error } = useProducts(page, pageSize, search || undefined, category || undefined);
+  const { data, isLoading, isFetching, error } = useProducts(page, pageSize, search || undefined, category || undefined);
 
   const totalPages = data ? Math.ceil(data.total / pageSize) : 0;
 
@@ -28,12 +31,6 @@ const ProductList: FC = () => {
     setSearch(searchInput.trim());
     setPage(1);
     setPageInput('1');
-  };
-
-  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      applySearch();
-    }
   };
 
   const clearSearch = () => {
@@ -74,132 +71,120 @@ const ProductList: FC = () => {
 
   const hasProducts = data && data.products.length > 0;
 
+  const renderProductsContent = () => {
+    if (isLoading) {
+      return <p className="py-8 text-center text-gray-500">Loading products...</p>;
+    }
+
+    if (!hasProducts) {
+      return <p className="py-8 text-center text-gray-500">No products found.</p>;
+    }
+
+    return (
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+        {data.products.map(product => (
+          <ProductCard key={product.id} product={product} />
+        ))}
+      </div>
+    );
+  };
+
   return (
-    <div className="p-4">
-      <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
-        <div className="flex flex-wrap items-center gap-4">
+    <div className="w-full min-h-screen flex flex-col">
+      <FilterSidebar
+        searchInput={searchInput}
+        onSearchInputChange={setSearchInput}
+        onSearchApply={applySearch}
+        onSearchClear={clearSearch}
+        search={search}
+        category={category}
+        onCategoryChange={handleCategoryChange}
+        categories={categories}
+        categoriesLoading={categoriesLoading}
+      />
+
+      <div className={`p-6 pb-20 flex-1 transition-all duration-300 ${isOpen ? 'ml-64' : 'ml-0'}`}>
+        <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
           <div className="flex items-center gap-2">
-            <input
-              type="text"
-              placeholder="Search products..."
-              value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
-              onKeyDown={handleSearchKeyDown}
-              disabled={!!category}
-              className="border rounded px-3 py-1.5 text-sm w-48 disabled:bg-gray-100 disabled:cursor-not-allowed"
-            />
-            <button
-              onClick={applySearch}
-              disabled={!!category}
-              className="px-3 py-1.5 bg-blue-500 text-white rounded text-sm hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Search
-            </button>
-            {search && (
-              <button
-                onClick={clearSearch}
-                className="px-3 py-1.5 border rounded text-sm hover:bg-gray-100"
-              >
-                Clear
-              </button>
-            )}
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-600">Category:</span>
+            <span className="text-sm text-gray-600">Products per page:</span>
             <select
-              value={category}
-              onChange={(e) => handleCategoryChange(e.target.value)}
-              disabled={categoriesLoading}
-              className="border rounded px-2 py-1 text-sm min-w-32"
+              value={pageSize}
+              onChange={(e) => handlePageSizeChange(Number(e.target.value))}
+              className="border rounded px-2 py-1 text-sm"
             >
-              <option value="">All Categories</option>
-              {categories?.map((cat) => (
-                <option key={cat} value={cat}>
-                  {cat.charAt(0).toUpperCase() + cat.slice(1).replaceAll('-', ' ')}
+              {PAGE_SIZE_OPTIONS.map((size) => (
+                <option key={size} value={size}>
+                  {size}
                 </option>
               ))}
             </select>
           </div>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-600">Products per page:</span>
-          <select
-            value={pageSize}
-            onChange={(e) => handlePageSizeChange(Number(e.target.value))}
-            className="border rounded px-2 py-1 text-sm"
-          >
-            {PAGE_SIZE_OPTIONS.map((size) => (
-              <option key={size} value={size}>
-                {size}
-              </option>
-            ))}
-          </select>
-        </div>
+
+        {search && data && (
+          <p className="text-sm text-gray-600 mb-4">
+            Showing results for "{search}" ({data.total} found)
+          </p>
+        )}
+
+        {category && data && (
+          <p className="text-sm text-gray-600 mb-4">
+            Showing {category.charAt(0).toUpperCase() + category.slice(1).replaceAll('-', ' ')} ({data.total} products)
+          </p>
+        )}
+
+        {renderProductsContent()}
       </div>
 
-      {search && data && (
-        <p className="text-sm text-gray-600 mb-4">
-          Showing results for "{search}" ({data.total} found)
-        </p>
-      )}
-
-      {category && data && (
-        <p className="text-sm text-gray-600 mb-4">
-          Showing {category.charAt(0).toUpperCase() + category.slice(1).replaceAll('-', ' ')} ({data.total} products)
-        </p>
-      )}
-
-      {isLoading ? (
-        <p className="py-8 text-center text-gray-500">Loading products...</p>
-      ) : !hasProducts ? (
-        <p className="py-8 text-center text-gray-500">No products found.</p>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {data.products.map(product => (
-            <ProductCard key={product.id} product={product} />
-          ))}
+      {(hasProducts || (isFetching && totalPages > 0)) && (
+        <div className={`fixed bottom-4 z-40 transition-all duration-300 ${isOpen ? 'left-[calc(256px+1rem)] right-4' : 'left-1/2 -translate-x-1/2'}`}>
+          <div className="bg-white border rounded-full shadow-lg py-2 px-4 flex items-center justify-center gap-4 w-fit mx-auto">
+            <button
+              onClick={() => {
+                const newPage = Math.max(1, page - 1);
+                setPage(newPage);
+                setPageInput(String(newPage));
+              }}
+              disabled={page === 1 || isFetching}
+              className="px-3 py-1.5 border rounded-full disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 text-sm"
+            >
+              Previous
+            </button>
+            <div className="flex items-center gap-2 text-sm text-gray-600">
+              {isFetching ? (
+                <svg className="animate-spin h-4 w-4 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                </svg>
+              ) : (
+                <span>Page</span>
+              )}
+              <input
+                type="number"
+                min={1}
+                max={totalPages}
+                value={pageInput}
+                onChange={(e) => setPageInput(e.target.value)}
+                onBlur={applyPageInput}
+                onKeyDown={handlePageInputKeyDown}
+                disabled={isFetching}
+                className="w-14 px-2 py-1 border rounded text-center text-sm disabled:bg-gray-50"
+              />
+              <span>of {totalPages}</span>
+            </div>
+            <button
+              onClick={() => {
+                const newPage = Math.min(totalPages, page + 1);
+                setPage(newPage);
+                setPageInput(String(newPage));
+              }}
+              disabled={page === totalPages || isFetching}
+              className="px-3 py-1.5 border rounded-full disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 text-sm"
+            >
+              Next
+            </button>
+          </div>
         </div>
-      )}
-
-      {hasProducts && (
-        <div className="flex items-center justify-center gap-4 mt-6">
-        <button
-          onClick={() => {
-            const newPage = Math.max(1, page - 1);
-            setPage(newPage);
-            setPageInput(String(newPage));
-          }}
-          disabled={page === 1}
-          className="px-4 py-2 border rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
-        >
-          Previous
-        </button>
-        <div className="flex items-center gap-2 text-sm text-gray-600">
-          <span>Page</span>
-          <input
-            type="number"
-            min={1}
-            max={totalPages}
-            value={pageInput}
-            onChange={(e) => setPageInput(e.target.value)}
-            onBlur={applyPageInput}
-            onKeyDown={handlePageInputKeyDown}
-            className="w-16 px-2 py-1 border rounded text-center"
-          />
-          <span>of {totalPages}</span>
-        </div>
-        <button
-          onClick={() => {
-            const newPage = Math.min(totalPages, page + 1);
-            setPage(newPage);
-            setPageInput(String(newPage));
-          }}
-          disabled={page === totalPages}
-          className="px-4 py-2 border rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
-        >
-          Next
-        </button>
-      </div>
       )}
     </div>
   );
