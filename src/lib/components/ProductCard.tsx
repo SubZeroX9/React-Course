@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import type { ProductSummary } from '@lib/types/Product';
 import { usePrefetchProduct } from '@hooks/usePrefetchProduct';
+import { StarRating } from './StarRating';
 
 interface ProductCardProps {
   product: ProductSummary;
@@ -41,6 +42,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         className="w-full h-48 object-contain mb-4"
       />
       <h2 className="text-lg font-semibold mb-1 line-clamp-2 min-h-[3.5rem]">{product.title}</h2>
+      <div className="flex justify-center mb-2">
+        <StarRating rating={product.rating} />
+      </div>
       <div className="flex items-center justify-center gap-2 mb-2">
         <span className="text-green-600 font-bold">${product.price}</span>
         {originalPrice && (
