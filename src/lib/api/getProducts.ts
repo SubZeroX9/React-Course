@@ -6,13 +6,28 @@ export interface ProductsParams {
   limit?: number;
   skip?: number;
   search?: string;
+  category?: string;
 }
 
 export const getProducts = async (params?: ProductsParams): Promise<PaginatedResponse<Product>> => {
-  const { limit = 8, skip = 0, search } = params ?? {};
-  const endpoint = search ? '/products/search' : '/products';
-  const searchParam = search ? `&q=${encodeURIComponent(search)}` : '';
+  const { limit = 8, skip = 0, search, category } = params ?? {};
+
+  let endpoint: string;
+  if (category) {
+    endpoint = `/products/category/${encodeURIComponent(category)}`;
+  } else if (search) {
+    endpoint = '/products/search';
+  } else {
+    endpoint = '/products';
+  }
+
+  const searchParam = search && !category ? `&q=${encodeURIComponent(search)}` : '';
   const { data } = await api.get<PaginatedResponse<Product>>(`${endpoint}?limit=${limit}&skip=${skip}${searchParam}`);
+  return data;
+};
+
+export const getCategoryList = async (): Promise<string[]> => {
+  const { data } = await api.get<string[]>('/products/category-list');
   return data;
 };
 

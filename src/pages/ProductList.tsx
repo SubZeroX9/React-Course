@@ -1,4 +1,5 @@
 import { useProducts } from '@hooks/useProducts';
+import { useCategories } from '@hooks/useCategories';
 import { ProductCard } from '@lib/components/ProductCard';
 import { useState, type FC } from 'react';
 
@@ -10,8 +11,10 @@ const ProductList: FC = () => {
   const [pageInput, setPageInput] = useState('1');
   const [searchInput, setSearchInput] = useState('');
   const [search, setSearch] = useState('');
+  const [category, setCategory] = useState('');
 
-  const { data, isLoading, error } = useProducts(page, pageSize, search || undefined);
+  const { data: categories, isLoading: categoriesLoading } = useCategories();
+  const { data, isLoading, error } = useProducts(page, pageSize, search || undefined, category || undefined);
 
   const totalPages = data ? Math.ceil(data.total / pageSize) : 0;
 
@@ -40,6 +43,17 @@ const ProductList: FC = () => {
     setPageInput('1');
   };
 
+  const handleCategoryChange = (newCategory: string) => {
+    setCategory(newCategory);
+    setPage(1);
+    setPageInput('1');
+    // Clear search when selecting a category (API doesn't support both)
+    if (newCategory) {
+      setSearchInput('');
+      setSearch('');
+    }
+  };
+
   const applyPageInput = () => {
     const pageNum = Number.parseInt(pageInput, 10);
     if (!Number.isNaN(pageNum) && pageNum >= 1 && pageNum <= totalPages) {
@@ -62,30 +76,50 @@ const ProductList: FC = () => {
 
   return (
     <div className="p-4">
-      <div className="flex flex-wrap items-center gap-4 mb-4">
-        <div className="flex items-center gap-2">
-          <input
-            type="text"
-            placeholder="Search products..."
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
-            onKeyDown={handleSearchKeyDown}
-            className="border rounded px-3 py-1.5 text-sm w-48"
-          />
-          <button
-            onClick={applySearch}
-            className="px-3 py-1.5 bg-blue-500 text-white rounded text-sm hover:bg-blue-600"
-          >
-            Search
-          </button>
-          {search && (
+      <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
+        <div className="flex flex-wrap items-center gap-4">
+          <div className="flex items-center gap-2">
+            <input
+              type="text"
+              placeholder="Search products..."
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              onKeyDown={handleSearchKeyDown}
+              disabled={!!category}
+              className="border rounded px-3 py-1.5 text-sm w-48 disabled:bg-gray-100 disabled:cursor-not-allowed"
+            />
             <button
-              onClick={clearSearch}
-              className="px-3 py-1.5 border rounded text-sm hover:bg-gray-100"
+              onClick={applySearch}
+              disabled={!!category}
+              className="px-3 py-1.5 bg-blue-500 text-white rounded text-sm hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Clear
+              Search
             </button>
-          )}
+            {search && (
+              <button
+                onClick={clearSearch}
+                className="px-3 py-1.5 border rounded text-sm hover:bg-gray-100"
+              >
+                Clear
+              </button>
+            )}
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-600">Category:</span>
+            <select
+              value={category}
+              onChange={(e) => handleCategoryChange(e.target.value)}
+              disabled={categoriesLoading}
+              className="border rounded px-2 py-1 text-sm min-w-32"
+            >
+              <option value="">All Categories</option>
+              {categories?.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat.charAt(0).toUpperCase() + cat.slice(1).replaceAll('-', ' ')}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
         <div className="flex items-center gap-2">
           <span className="text-sm text-gray-600">Products per page:</span>
@@ -106,6 +140,12 @@ const ProductList: FC = () => {
       {search && data && (
         <p className="text-sm text-gray-600 mb-4">
           Showing results for "{search}" ({data.total} found)
+        </p>
+      )}
+
+      {category && data && (
+        <p className="text-sm text-gray-600 mb-4">
+          Showing {category.charAt(0).toUpperCase() + category.slice(1).replaceAll('-', ' ')} ({data.total} products)
         </p>
       )}
 

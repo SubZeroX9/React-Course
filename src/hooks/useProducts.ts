@@ -4,11 +4,11 @@ import type { PaginatedResponse } from '@lib/types/PaginatedResponse';
 import { getProducts, getProductById } from '@lib/api/getProducts';
 import { queryKeys } from '@lib/utils/queryKeys';
 
-export const useProducts = (page: number = 1, limit: number = 8, search?: string) => {
+export const useProducts = (page: number = 1, limit: number = 8, search?: string, category?: string) => {
   const skip = (page - 1) * limit;
   return useQuery<PaginatedResponse<Product>, Error>({
-    queryKey: queryKeys.products(page, limit, search),
-    queryFn: () => getProducts({ limit, skip, search }),
+    queryKey: queryKeys.products(page, limit, search, category),
+    queryFn: () => getProducts({ limit, skip, search, category }),
   });
 };
 
