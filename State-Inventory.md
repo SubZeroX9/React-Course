@@ -27,147 +27,19 @@ This document lists all pieces of state in the project and categorizes them by t
 | `page` | `useFilterStore` | `src/stores/filterStore.ts` | Current pagination page number |
 | `pageSize` | `useFilterStore` | `src/stores/filterStore.ts` | Number of products per page |
 
-**Actions:**
-- `setSearchInput(input)` - Update search input text
-- `applySearch()` - Apply search input as active search, reset page to 1
-- `clearSearch()` - Clear search input and active search
-- `setCategory(category)` - Set category filter (clears search if category selected)
-- `setPage(page)` - Set current page
-- `setPageSize(size)` - Set page size, reset page to 1
-- `resetFilters()` - Reset all filters to defaults
+### Toast Store
 
-**Why Zustand?** Filter state was moved from local `useState` in `ProductList.tsx` to a global Zustand store so that `FilterSidebar` can be rendered in `App.tsx` and be accessible from any page (including `ProductDetail`). When filters are applied from non-products pages, the app navigates to `/products`.
-
-### Toast Store (Step 4)
-
-#### Step 4.1 — Library Choice
-
-**Library:** Zustand
-
-**Why Zustand?** I was familiar with the library and saw it as most fitting for this use case.
-
-**Store Location:** `src/stores/toastStore.ts`
-
-#### Step 4.2 — Notification Shape
-
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `id` | `string` | Yes | Unique identifier (timestamp + random string) |
-| `message` | `string` | Yes | The notification text to display |
-| `type` | `'success' \| 'error' \| 'info' \| 'warning'` | Yes | Determines toast styling/color |
-| `duration` | `number` | No | Auto-dismiss time in ms (default: 5000, 0 = never) |
-
-**Store State:**
-| State | Type | Description |
-|-------|------|-------------|
-| `toasts` | `Toast[]` | Array of active toast notifications |
-
-**Store Actions:**
-| Action | Description |
-|--------|-------------|
-| `addToast(message, type?, duration?)` | Add a toast notification, auto-removes after duration |
-| `removeToast(id)` | Remove a specific toast by ID |
-| `clearToasts()` | Remove all toasts |
-
-#### Step 4.3 — ToastContainer Component
-
-**Location:** `src/lib/components/ToastContainer.tsx`
-
-**How it works:**
-- Subscribes to `useToastStore` to get the list of toasts
-- Renders toasts in a fixed position container (bottom-right)
-- Each toast has different styling based on `type`:
-  - `success` → green background
-  - `error` → red background
-  - `info` → blue background
-  - `warning` → yellow background
-- Each toast has a close button (×) to manually dismiss
-- Mounted in `App.tsx` at the root level
-
-**Screenshots:**
-- Error toast: ![Error Toast](Images/ErrorToastBar.png)
-
-- Success toast: ![Success Toast](Images/SuccessToastBar.png) 
+| State | Store | Location | Description |
+|-------|-------|----------|-------------|
+| `toasts` | `useToastStore` | `src/stores/toastStore.ts` | Array of active toast notifications |
 
 ---
 
-## Global Client State (Context) — Sidebar
+## Global Client State (Context)
 
-### Step 2.1 — Sidebar Choice
-
-**Type:** Filter Sidebar
-
-**What opens it:**
-- Hamburger menu button in the Header component (top-left)
-
-**Where it appears:**
-- Left side of the screen
-- Fixed position, slides in from the left
-- Overlay on mobile (with dark backdrop), push content on desktop
-- Contains search input and category filter
-
-### Step 2.2 — Layout/UI Context Design
-
-**Context State:**
-| State | Type | Description |
-|-------|------|-------------|
-| `isOpen` | `boolean` | Whether the sidebar is currently visible |
-
-**Context Actions:**
-| Action | Description |
-|--------|-------------|
-| `open()` | Opens the sidebar |
-| `close()` | Closes the sidebar |
-| `toggle()` | Toggles sidebar open/closed state |
-
-**Provider Location:**
-- `SidebarProvider` wraps the entire app inside `Router` in `App.tsx`
-- This ensures all routes have access to sidebar state
-
-**Components that READ from context:**
-- `Header` - reads `isOpen` to show active state on toggle button
-- `FilterSidebar` - reads `isOpen` to show/hide itself
-- `ProductList` - reads `isOpen` to adjust content margin
-
-**Components that TRIGGER actions only:**
-- `Header` - calls `toggle()` on hamburger button click
-- `FilterSidebar` - calls `close()` on overlay click and close button
-
-### Step 2.3 — Context Summary
-
-**SidebarContext** manages the visibility state of the filter sidebar across the application.
-
-| Field/Action | Type | Description |
-|--------------|------|-------------|
-| `isOpen` | `boolean` | Current visibility state of the sidebar |
-| `open()` | `() => void` | Sets `isOpen` to `true` |
-| `close()` | `() => void` | Sets `isOpen` to `false` |
-| `toggle()` | `() => void` | Flips `isOpen` between `true`/`false` |
-
-The context is consumed via the `useSidebar()` hook, which throws an error if used outside the provider. State is persisted to localStorage under the key `"sidebar-open"` so it survives page refreshes.
-
-**Screenshot:**
-![Filter Sidebar](Images/filter-sidebar.gif)
-
-### Step 3 — localStorage Persistence
-
-**Custom Hook:** `useLocalStorage<T>(key, defaultValue)`
-
-**How it works:**
-- On first load: tries `localStorage.getItem(key)`, parses JSON, falls back to `defaultValue` if missing/invalid
-- On every change: saves new value to localStorage via `JSON.stringify()`
-- Uses `useState` internally with lazy initializer to avoid SSR issues
-- `useEffect` syncs state changes back to localStorage
-
-**Test Results:**
-- Opened sidebar, refreshed → still open ✓
-- Closed sidebar, refreshed → still closed ✓
-
-**Files:**
-- `src/context/SidebarContext.ts` - Context definition
-- `src/context/SidebarProvider.tsx` - Provider component with localStorage persistence
-- `src/hooks/useSidebar.ts` - Consumer hook
-- `src/hooks/useLocalStorage.ts` - Custom hook for localStorage persistence
+| State | Hook | Provider | Storage | Description |
+|-------|------|----------|---------|-------------|
+| `isOpen` | `useSidebar` | `SidebarProvider` | localStorage | Sidebar visibility state |
 
 ---
 
@@ -184,21 +56,6 @@ The context is consumed via the `useSidebar()` hook, which throws an error if us
 | State | Component | Description |
 |-------|-----------|-------------|
 | Product ID (`:id`) | ProductDetail.tsx | Product ID from route `/products/:id` |
-
----
-
-## Component Hierarchy for Global State
-
-```
-App.tsx
-├── SidebarProvider (Context)
-│   ├── Header (uses useSidebar for toggle button)
-│   ├── FilterSidebar (uses useSidebar + useFilterStore)
-│   ├── Routes
-│   │   ├── ProductList (uses useSidebar + useFilterStore)
-│   │   └── ProductDetail (can access sidebar via useSidebar)
-│   └── ToastContainer (uses useToastStore)
-```
 
 ---
 
