@@ -1,54 +1,41 @@
 import { useProducts } from '@hooks/useProducts';
-import { useCategories } from '@hooks/useCategories';
 import { ProductCard } from '@lib/components/ProductCard';
-import { FilterSidebar } from '@lib/components/FilterSidebar';
 import { useSidebar } from '@hooks/useSidebar';
+import { useFilterStore } from '@stores/filterStore';
 import { useState, type FC } from 'react';
 
 const PAGE_SIZE_OPTIONS = [4, 8, 12] as const;
 
 const ProductList: FC = () => {
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState<number>(8);
   const [pageInput, setPageInput] = useState('1');
-  const [searchInput, setSearchInput] = useState('');
-  const [search, setSearch] = useState('');
-  const [category, setCategory] = useState('');
 
   const { isOpen } = useSidebar();
-  const { data: categories, isLoading: categoriesLoading } = useCategories();
-  const { data, isLoading, isFetching, error } = useProducts(page, pageSize, search || undefined, category || undefined);
+  const {
+    search,
+    category,
+    page,
+    pageSize,
+    setPage,
+    setPageSize,
+  } = useFilterStore();
+
+  const { data, isLoading, isFetching, error } = useProducts(
+    page,
+    pageSize,
+    search || undefined,
+    category || undefined
+  );
 
   const totalPages = data ? Math.ceil(data.total / pageSize) : 0;
 
   const handlePageSizeChange = (newSize: number) => {
     setPageSize(newSize);
-    setPage(1);
     setPageInput('1');
   };
 
-  const applySearch = () => {
-    setSearch(searchInput.trim());
-    setPage(1);
-    setPageInput('1');
-  };
-
-  const clearSearch = () => {
-    setSearchInput('');
-    setSearch('');
-    setPage(1);
-    setPageInput('1');
-  };
-
-  const handleCategoryChange = (newCategory: string) => {
-    setCategory(newCategory);
-    setPage(1);
-    setPageInput('1');
-    // Clear search when selecting a category (API doesn't support both)
-    if (newCategory) {
-      setSearchInput('');
-      setSearch('');
-    }
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+    setPageInput(String(newPage));
   };
 
   const applyPageInput = () => {
@@ -91,18 +78,6 @@ const ProductList: FC = () => {
 
   return (
     <div className="w-full min-h-screen flex flex-col">
-      <FilterSidebar
-        searchInput={searchInput}
-        onSearchInputChange={setSearchInput}
-        onSearchApply={applySearch}
-        onSearchClear={clearSearch}
-        search={search}
-        category={category}
-        onCategoryChange={handleCategoryChange}
-        categories={categories}
-        categoriesLoading={categoriesLoading}
-      />
-
       <div className={`p-6 pb-20 flex-1 transition-all duration-300 ${isOpen ? 'ml-64' : 'ml-0'}`}>
         <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
           <div className="flex items-center gap-2">
@@ -140,11 +115,7 @@ const ProductList: FC = () => {
         <div className={`fixed bottom-4 z-40 transition-all duration-300 ${isOpen ? 'left-[calc(256px+1rem)] right-4' : 'left-1/2 -translate-x-1/2'}`}>
           <div className="bg-white border rounded-full shadow-lg py-2 px-4 flex items-center justify-center gap-4 w-fit mx-auto">
             <button
-              onClick={() => {
-                const newPage = Math.max(1, page - 1);
-                setPage(newPage);
-                setPageInput(String(newPage));
-              }}
+              onClick={() => handlePageChange(Math.max(1, page - 1))}
               disabled={page === 1 || isFetching}
               className="px-3 py-1.5 border rounded-full disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 text-sm"
             >
@@ -173,11 +144,7 @@ const ProductList: FC = () => {
               <span>of {totalPages}</span>
             </div>
             <button
-              onClick={() => {
-                const newPage = Math.min(totalPages, page + 1);
-                setPage(newPage);
-                setPageInput(String(newPage));
-              }}
+              onClick={() => handlePageChange(Math.min(totalPages, page + 1))}
               disabled={page === totalPages || isFetching}
               className="px-3 py-1.5 border rounded-full disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 text-sm"
             >

@@ -3,6 +3,8 @@ import ProductList from '@pages/ProductList'
 import ProductDetail from '@pages/ProductDetail'
 import { SidebarProvider } from '@context/SidebarProvider'
 import { Header } from '@lib/components/Header'
+import { FilterSidebar } from '@lib/components/FilterSidebar'
+import { ToastContainer } from '@lib/components/ToastContainer'
 import './App.css'
 
 function App() {
@@ -12,6 +14,7 @@ function App() {
       <SidebarProvider>
         <div className="min-h-screen bg-gray-50">
           <Header />
+          <FilterSidebar />
           <main>
             <Routes>
               <Route path="/" element={<Navigate to="/products" replace />} />
@@ -19,6 +22,7 @@ function App() {
               <Route path="/products/:id" element={<ProductDetail />} />
             </Routes>
           </main>
+          <ToastContainer />
         </div>
       </SidebarProvider>
     </Router>

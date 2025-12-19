@@ -1,34 +1,44 @@
 import type { FC } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useSidebar } from '@hooks/useSidebar';
+import { useFilterStore } from '@stores/filterStore';
+import { useCategories } from '@hooks/useCategories';
 
-interface FilterSidebarProps {
-  searchInput: string;
-  onSearchInputChange: (value: string) => void;
-  onSearchApply: () => void;
-  onSearchClear: () => void;
-  search: string;
-  category: string;
-  onCategoryChange: (category: string) => void;
-  categories: string[] | undefined;
-  categoriesLoading: boolean;
-}
-
-export const FilterSidebar: FC<FilterSidebarProps> = ({
-  searchInput,
-  onSearchInputChange,
-  onSearchApply,
-  onSearchClear,
-  search,
-  category,
-  onCategoryChange,
-  categories,
-  categoriesLoading,
-}) => {
+export const FilterSidebar: FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const { isOpen, close } = useSidebar();
+  const { data: categories, isLoading: categoriesLoading } = useCategories();
+
+  const {
+    search,
+    searchInput,
+    category,
+    setSearchInput,
+    applySearch,
+    clearSearch,
+    setCategory,
+  } = useFilterStore();
+
+  const navigateToProducts = () => {
+    if (location.pathname !== '/products') {
+      navigate('/products');
+    }
+  };
+
+  const handleSearchApply = () => {
+    applySearch();
+    navigateToProducts();
+  };
+
+  const handleCategoryChange = (newCategory: string) => {
+    setCategory(newCategory);
+    navigateToProducts();
+  };
 
   const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      onSearchApply();
+      handleSearchApply();
     }
   };
 
@@ -76,14 +86,14 @@ export const FilterSidebar: FC<FilterSidebarProps> = ({
               type="text"
               placeholder="Search..."
               value={searchInput}
-              onChange={(e) => onSearchInputChange(e.target.value)}
+              onChange={(e) => setSearchInput(e.target.value)}
               onKeyDown={handleSearchKeyDown}
               disabled={!!category}
               className="w-full border rounded px-3 py-2 text-sm disabled:bg-gray-100 disabled:cursor-not-allowed"
             />
             <div className="flex gap-2 mt-2">
               <button
-                onClick={onSearchApply}
+                onClick={handleSearchApply}
                 disabled={!!category}
                 className="flex-1 px-3 py-1.5 bg-blue-500 text-white rounded text-sm hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
               >
@@ -91,7 +101,7 @@ export const FilterSidebar: FC<FilterSidebarProps> = ({
               </button>
               {search && (
                 <button
-                  onClick={onSearchClear}
+                  onClick={clearSearch}
                   className="px-3 py-1.5 border rounded text-sm hover:bg-gray-100"
                 >
                   Clear
@@ -113,7 +123,7 @@ export const FilterSidebar: FC<FilterSidebarProps> = ({
             <select
               id="sidebar-category"
               value={category}
-              onChange={(e) => onCategoryChange(e.target.value)}
+              onChange={(e) => handleCategoryChange(e.target.value)}
               disabled={categoriesLoading}
               className="w-full border rounded px-3 py-2 text-sm"
             >
@@ -134,7 +144,7 @@ export const FilterSidebar: FC<FilterSidebarProps> = ({
                 {search && (
                   <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">
                     Search: {search}
-                    <button onClick={onSearchClear} className="hover:text-blue-600">
+                    <button onClick={clearSearch} className="hover:text-blue-600">
                       <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                       </svg>
@@ -144,7 +154,7 @@ export const FilterSidebar: FC<FilterSidebarProps> = ({
                 {category && (
                   <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-800 text-xs rounded">
                     {category.charAt(0).toUpperCase() + category.slice(1).replaceAll('-', ' ')}
-                    <button onClick={() => onCategoryChange('')} className="hover:text-green-600">
+                    <button onClick={() => setCategory('')} className="hover:text-green-600">
                       <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                       </svg>
