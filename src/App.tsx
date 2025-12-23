@@ -3,9 +3,12 @@ import ProductList from '@pages/ProductList'
 import ProductDetail from '@pages/ProductDetail'
 import { SidebarProvider } from '@context/SidebarProvider'
 import { Header, FilterSidebar, ToastContainer } from '@lib/components'
+import { useRTL } from '@hooks/useRTL'
 import './App.css'
 
 function App() {
+  // Apply RTL direction based on language
+  useRTL();
 
   return (
     <Router>
