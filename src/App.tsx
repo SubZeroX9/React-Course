@@ -2,9 +2,7 @@ import {BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-do
 import ProductList from '@pages/ProductList'
 import ProductDetail from '@pages/ProductDetail'
 import { SidebarProvider } from '@context/SidebarProvider'
-import { Header } from '@lib/components/Header'
-import { FilterSidebar } from '@lib/components/FilterSidebar'
-import { ToastContainer } from '@lib/components/ToastContainer'
+import { Header, FilterSidebar, ToastContainer } from '@lib/components'
 import './App.css'
 
 function App() {

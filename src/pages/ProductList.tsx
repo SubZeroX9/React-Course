@@ -1,5 +1,5 @@
 import { useProducts } from '@hooks/useProducts';
-import { ProductCard } from '@lib/components/ProductCard';
+import { ProductCard } from '@lib/components';
 import { useSidebar } from '@hooks/useSidebar';
 import { useFilterStore } from '@stores/filterStore';
 import { useState, type FC } from 'react';
