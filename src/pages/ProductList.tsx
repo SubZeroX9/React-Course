@@ -2,12 +2,14 @@ import { useProducts } from '@hooks/useProducts';
 import { ProductCard } from '@lib/components';
 import { useSidebar } from '@hooks/useSidebar';
 import { useFilterStore } from '@stores/filterStore';
+import { useTranslation } from 'react-i18next';
 import { useState, type FC } from 'react';
 
 const PAGE_SIZE_OPTIONS = [4, 8, 12] as const;
 
 const ProductList: FC = () => {
   const [pageInput, setPageInput] = useState('1');
+  const { t } = useTranslation('products');
 
   const { isOpen } = useSidebar();
   const {
@@ -54,17 +56,17 @@ const ProductList: FC = () => {
     }
   };
 
-  if (error) return <p className="p-4 text-red-500">Error: {error.message}</p>;
+  if (error) return <p className="p-4 text-red-500">{t('error')}: {error.message}</p>;
 
   const hasProducts = data && data.products.length > 0;
 
   const renderProductsContent = () => {
     if (isLoading) {
-      return <p className="py-8 text-center text-gray-500">Loading products...</p>;
+      return <p className="py-8 text-center text-gray-500">{t('loading')}</p>;
     }
 
     if (!hasProducts) {
-      return <p className="py-8 text-center text-gray-500">No products found.</p>;
+      return <p className="py-8 text-center text-gray-500">{t('emptyState')}</p>;
     }
 
     return (
@@ -78,10 +80,12 @@ const ProductList: FC = () => {
 
   return (
     <div className="w-full min-h-screen flex flex-col">
-      <div className={`p-6 pb-20 flex-1 transition-all duration-300 ${isOpen ? 'ml-64' : 'ml-0'}`}>
+      <div className={`p-6 pb-20 flex-1 transition-all duration-300 ${isOpen ? 'rtl:mr-64 ltr:ml-64' : 'rtl:mr-0 ltr:ml-0'}`}>
+        <h1 className="text-2xl font-bold mb-4">{t('title')}</h1>
+
         <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
           <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-600">Products per page:</span>
+            <span className="text-sm text-gray-600">{t('pagination.productsPerPage')}:</span>
             <select
               value={pageSize}
               onChange={(e) => handlePageSizeChange(Number(e.target.value))}
@@ -96,15 +100,9 @@ const ProductList: FC = () => {
           </div>
         </div>
 
-        {search && data && (
+        {data && (
           <p className="text-sm text-gray-600 mb-4">
-            Showing results for "{search}" ({data.total} found)
-          </p>
-        )}
-
-        {category && data && (
-          <p className="text-sm text-gray-600 mb-4">
-            Showing {category.charAt(0).toUpperCase() + category.slice(1).replaceAll('-', ' ')} ({data.total} products)
+            {t('resultsCount', { count: data.total })}
           </p>
         )}
 
@@ -112,14 +110,14 @@ const ProductList: FC = () => {
       </div>
 
       {(hasProducts || (isFetching && totalPages > 0)) && (
-        <div className={`fixed bottom-4 z-40 transition-all duration-300 ${isOpen ? 'left-[calc(256px+1rem)] right-4' : 'left-1/2 -translate-x-1/2'}`}>
+        <div className={`fixed bottom-4 z-40 transition-all duration-300 ${isOpen ? 'rtl:right-[calc(256px+1rem)] rtl:left-4 ltr:left-[calc(256px+1rem)] ltr:right-4' : 'left-1/2 -translate-x-1/2'}`}>
           <div className="bg-white border rounded-full shadow-lg py-2 px-4 flex items-center justify-center gap-4 w-fit mx-auto">
             <button
               onClick={() => handlePageChange(Math.max(1, page - 1))}
               disabled={page === 1 || isFetching}
               className="px-3 py-1.5 border rounded-full disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 text-sm"
             >
-              Previous
+              {t('pagination.previous')}
             </button>
             <div className="flex items-center gap-2 text-sm text-gray-600">
               {isFetching ? (
@@ -128,7 +126,7 @@ const ProductList: FC = () => {
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                 </svg>
               ) : (
-                <span>Page</span>
+                <span>{t('pagination.page')}</span>
               )}
               <input
                 type="number"
@@ -141,14 +139,14 @@ const ProductList: FC = () => {
                 disabled={isFetching}
                 className="w-14 px-2 py-1 border rounded text-center text-sm disabled:bg-gray-50"
               />
-              <span>of {totalPages}</span>
+              <span>{t('pagination.of')} {totalPages}</span>
             </div>
             <button
               onClick={() => handlePageChange(Math.min(totalPages, page + 1))}
               disabled={page === totalPages || isFetching}
               className="px-3 py-1.5 border rounded-full disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 text-sm"
             >
-              Next
+              {t('pagination.next')}
             </button>
           </div>
         </div>
