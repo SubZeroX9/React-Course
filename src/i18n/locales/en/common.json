@@ -1,0 +1,34 @@
+{
+  "header": {
+    "logo": "Product Store",
+    "menu": "Menu"
+  },
+  "buttons": {
+    "back": "Back",
+    "close": "Close",
+    "apply": "Apply",
+    "clear": "Clear",
+    "viewDetails": "View Details"
+  },
+  "loading": "Loading...",
+  "pleaseWait": "Please wait...",
+  "error": "An error occurred",
+  "tryAgain": "Try again",
+  "toast": {
+    "success": "Success",
+    "error": "Error",
+    "warning": "Warning",
+    "info": "Info"
+  },
+  "theme": {
+    "label": "Theme",
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "language": {
+    "label": "Language",
+    "en": "English",
+    "he": "Hebrew"
+  },
+  "termsAgreement": "By using this site, you agree to our <1>Terms of Service</1>"
+}

@@ -1,0 +1,34 @@
+{
+  "header": {
+    "logo": "חנות מוצרים",
+    "menu": "תפריט"
+  },
+  "buttons": {
+    "back": "חזרה",
+    "close": "סגור",
+    "apply": "החל",
+    "clear": "נקה",
+    "viewDetails": "צפה בפרטים"
+  },
+  "loading": "טוען...",
+  "pleaseWait": "אנא המתן...",
+  "error": "אירעה שגיאה",
+  "tryAgain": "נסה שוב",
+  "toast": {
+    "success": "הצלחה",
+    "error": "שגיאה",
+    "warning": "אזהרה",
+    "info": "מידע"
+  },
+  "theme": {
+    "label": "עיצוב",
+    "light": "בהיר",
+    "dark": "כהה"
+  },
+  "language": {
+    "label": "שפה",
+    "en": "אנגלית",
+    "he": "עברית"
+  },
+  "termsAgreement": "בשימוש באתר זה, אתה מסכים <1>לתנאי השירות</1> שלנו"
+}

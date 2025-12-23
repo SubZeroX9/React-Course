@@ -1,0 +1,44 @@
+{
+  "title": "קטלוג מוצרים",
+  "emptyState": "לא נמצאו מוצרים",
+  "loading": "טוען מוצרים...",
+  "error": "נכשל בטעינת המוצרים",
+  "searchPlaceholder": "חפש מוצרים...",
+  "searchByName": "חיפוש לפי שם",
+  "categoryLabel": "קטגוריה",
+  "allCategories": "כל הקטגוריות",
+  "activeFilters": "פילטרים פעילים",
+  "clearFilters": "נקה פילטרים",
+  "resultsCount_one": "מציג מוצר {{count}}",
+  "resultsCount_other": "מציג {{count}} מוצרים",
+  "pagination": {
+    "page": "עמוד",
+    "of": "מתוך",
+    "goToPage": "עבור לעמוד",
+    "productsPerPage": "מוצרים בעמוד",
+    "previous": "הקודם",
+    "next": "הבא"
+  },
+  "detail": {
+    "backToProducts": "חזרה למוצרים",
+    "price": "מחיר",
+    "category": "קטגוריה",
+    "description": "תיאור",
+    "rating": "דירוג",
+    "availability": {
+      "inStock": "במלאי",
+      "outOfStock": "אזל מהמלאי",
+      "lowStock": "מלאי נמוך"
+    },
+    "notFound": "המוצר לא נמצא",
+    "loadingProduct": "טוען מוצר..."
+  },
+  "columns": {
+    "image": "תמונה",
+    "title": "כותרת",
+    "price": "מחיר",
+    "category": "קטגוריה",
+    "rating": "דירוג",
+    "actions": "פעולות"
+  }
+}
