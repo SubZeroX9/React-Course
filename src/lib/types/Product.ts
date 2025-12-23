@@ -1,14 +1,17 @@
-export interface Product {
+export interface ProductSummary {
   id: number
   title: string
   price: number
-  description: string
-  category: string
-  image: string
-  rating: ProductRating
+  thumbnail: string
+  rating: number
+  discountPercentage?: number
+  availabilityStatus?: string
 }
 
-export interface ProductRating {
-  rate: number
-  count: number
+export interface Product extends ProductSummary {
+  description: string
+  category: string
+  images: string[]
+  brand?: string
+  stock?: number
 }

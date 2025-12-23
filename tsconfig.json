@@ -6,7 +6,9 @@
       "@lib/*": ["lib/*"],
       "@components/*": ["components/*"],
       "@pages/*": ["pages/*"],
-      "@hooks/*": ["hooks/*"]
+      "@hooks/*": ["hooks/*"],
+      "@context/*": ["context/*"],
+      "@stores/*": ["stores/*"]
     }
   }
 }
