@@ -7,10 +7,12 @@ export interface ProductsParams {
   skip?: number;
   search?: string;
   category?: string;
+  sortBy?: string;
+  order?: 'asc' | 'desc';
 }
 
 export const getProducts = async (params?: ProductsParams): Promise<PaginatedResponse<ProductSummary>> => {
-  const { limit = 8, skip = 0, search, category } = params ?? {};
+  const { limit = 8, skip = 0, search, category, sortBy, order } = params ?? {};
 
   let endpoint: string;
   if (category) {
@@ -23,7 +25,8 @@ export const getProducts = async (params?: ProductsParams): Promise<PaginatedRes
 
   const searchParam = search && !category ? `&q=${encodeURIComponent(search)}` : '';
   const selectParam = '&select=title,price,thumbnail,rating,category,discountPercentage,availabilityStatus';
-  const { data } = await api.get<PaginatedResponse<ProductSummary>>(`${endpoint}?limit=${limit}&skip=${skip}${searchParam}${selectParam}`);
+  const sortParam = sortBy && order ? `&sortBy=${encodeURIComponent(sortBy)}&order=${order}` : '';
+  const { data } = await api.get<PaginatedResponse<ProductSummary>>(`${endpoint}?limit=${limit}&skip=${skip}${searchParam}${selectParam}${sortParam}`);
   return data;
 };
 

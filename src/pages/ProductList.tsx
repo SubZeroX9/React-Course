@@ -24,15 +24,20 @@ const ProductList: FC = () => {
     category,
     page,
     pageSize,
+    sortBy,
+    order,
     setPage,
     setPageSize,
+    setSort,
   } = useFilterStore();
 
   const { data, isLoading, isFetching, error } = useProducts(
     page,
     pageSize,
     search || undefined,
-    category || undefined
+    category || undefined,
+    sortBy || undefined,
+    order
   );
 
   const handlePageChange = (event: any) => {
@@ -40,6 +45,12 @@ const ProductList: FC = () => {
     if (event.rows !== pageSize) {
       setPageSize(event.rows);
     }
+  };
+
+  const handleSort = (event: any) => {
+    const newSortBy = event.sortField || '';
+    const newOrder = event.sortOrder === 1 ? 'asc' : event.sortOrder === -1 ? 'desc' : 'asc';
+    setSort(newSortBy, newOrder);
   };
 
   // Column body templates
@@ -130,6 +141,9 @@ const ProductList: FC = () => {
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
           currentPageReportTemplate={`${t('pagination.page')} {currentPage} ${t('pagination.of')} {totalPages}`}
           sortMode="single"
+          sortField={sortBy || undefined}
+          sortOrder={order === 'asc' ? 1 : -1}
+          onSort={handleSort}
           stripedRows
           showGridlines
         >
@@ -163,6 +177,7 @@ const ProductList: FC = () => {
             field="rating"
             header={t('columns.rating')}
             body={ratingBodyTemplate}
+            sortable
             style={{ width: '130px', textAlign: 'center' }}
           />
           <Column
