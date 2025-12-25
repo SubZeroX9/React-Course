@@ -22,7 +22,7 @@ export const getProducts = async (params?: ProductsParams): Promise<PaginatedRes
   }
 
   const searchParam = search && !category ? `&q=${encodeURIComponent(search)}` : '';
-  const selectParam = '&select=title,price,thumbnail,rating,discountPercentage,availabilityStatus';
+  const selectParam = '&select=title,price,thumbnail,rating,category,discountPercentage,availabilityStatus';
   const { data } = await api.get<PaginatedResponse<ProductSummary>>(`${endpoint}?limit=${limit}&skip=${skip}${searchParam}${selectParam}`);
   return data;
 };

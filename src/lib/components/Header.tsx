@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useSidebar } from '@hooks/useSidebar';
 import { LanguageSwitcher } from './LanguageSwitcher';
+import { ThemeSwitcher } from './ThemeSwitcher';
 
 export const Header: FC = () => {
   const { toggle, isOpen } = useSidebar();
@@ -25,7 +26,10 @@ export const Header: FC = () => {
             {t('header.logo')}
           </Link>
         </div>
-        <LanguageSwitcher />
+        <div className="flex items-center gap-4">
+          <ThemeSwitcher />
+          <LanguageSwitcher />
+        </div>
       </div>
     </header>
   );

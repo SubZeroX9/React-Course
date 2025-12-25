@@ -61,9 +61,10 @@ export const FilterSidebar: FC = () => {
         className={`
           fixed top-[57px] h-[calc(100vh-57px)] w-64 bg-white z-50 flex-shrink-0
           transition-transform duration-300 ease-in-out
+          rtl:right-0 ltr:left-0
           ${isOpen
-            ? 'rtl:right-0 ltr:left-0 rtl:border-l ltr:border-r translate-x-0 shadow-lg'
-            : 'rtl:-right-64 ltr:-left-64'
+            ? 'translate-x-0 rtl:border-l ltr:border-r shadow-lg'
+            : 'rtl:translate-x-full ltr:-translate-x-full'
           }
         `}
       >

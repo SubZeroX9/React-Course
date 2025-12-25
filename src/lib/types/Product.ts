@@ -4,13 +4,13 @@ export interface ProductSummary {
   price: number
   thumbnail: string
   rating: number
+  category: string
   discountPercentage?: number
   availabilityStatus?: string
 }
 
 export interface Product extends ProductSummary {
   description: string
-  category: string
   images: string[]
   brand?: string
   stock?: number
