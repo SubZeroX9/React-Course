@@ -1,75 +1,85 @@
-# React + TypeScript + Vite
+# React Store App - Advanced 1 Homework
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Step 0 - Prep (Path A)
 
-Currently, two official plugins are available:
+Starting Advanced 1 from commit `b4e02aa2a74cbbe42ff2e3acf3a58a0f87ba5355`.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+API used: DummyJSON (https://dummyjson.com)
 
-## React Compiler
+---
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+## Step 1 - i18n Setup
 
-Note: This will impact Vite dev & build performances.
+**Locales:** English (en), Hebrew (he)
 
-## Expanding the ESLint configuration
+**Namespaces:**
+- `common` - header, buttons, generic UI labels, theme/language switcher, footer
+- `products` - product list, detail page strings
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+**Screenshot:**
+![English Language](./Images/language-en.png)
+![Hebrew Language](./Images/language-he.png)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Step 2 - i18n Required Features
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+**Example keys and locations:**
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+1. **Interpolation:**
+   - Key: `products:resultsCount` → `"Showing {{count}} results"`
+   - Location: Products list page, below title
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+2. **Pluralization:**
+   - Key: `products:resultsCount` uses `count` for plural forms
+   - Location: Products list page (same as interpolation)
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+3. **Trans Component:**
+   - Key: `common:termsAgreement` → `"By using this site, you agree to our <1>Terms of Service</1>"`
+   - Location: Footer component (bold text embedded in translation)
+
+---
+
+## Step 3 - Language Switcher + Persistence
+
+**How persistence works:**
+- i18next-browser-languagedetector saves selected language to localStorage under key `app-language`
+- On page load, detector reads from localStorage and restores the language
+- If no language stored, defaults to English
+
+**Screenshots:**
+![Language Switch and Persistence](./Images/language-persistence.gif)
+
+---
+
+## Step 4 - RTL Mode
+
+**RTL Fixes:**
+1. **Sidebar positioning** → Fixed with Tailwind `ltr:ml-64 rtl:mr-64` classes
+2. **Filter sidebar positioning** → Fixed with `ltr:left-0 rtl:right-0` classes
+
+**Screenshot:**
+![RTL Mode](./Images/language-persistence.gif)
+
+---
+
+## Step 5 - PrimeReact DataTable
+
+**DataTable Features Implemented:**
+1. **Sorting** - Title, Price, and Rating columns (server-side sorting via API)
+2. **Pagination** - Lazy pagination with page size options: 4, 8, 12
+
+**Screenshot:**
+![DataTable](./Images/datatable.png)
+
+---
+
+## Step 6 - PrimeReact Theme Switcher
+
+**localStorage key:** `app-theme`
+
+**Default theme:** `light`
+
+**Screenshots:**
+![Light Theme](./Images/theme-light.png)
+![Dark Theme](./Images/theme-dark.png)
