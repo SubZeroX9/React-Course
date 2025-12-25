@@ -8,8 +8,10 @@
     "close": "סגור",
     "apply": "החל",
     "clear": "נקה",
+    "search": "חפש",
     "viewDetails": "צפה בפרטים"
   },
+  "filters": "מסננים",
   "loading": "טוען...",
   "pleaseWait": "אנא המתן...",
   "error": "אירעה שגיאה",

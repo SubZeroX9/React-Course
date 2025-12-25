@@ -6,7 +6,7 @@ interface ThemeStore {
 }
 
 const STORAGE_KEY = 'app-theme';
-const DEFAULT_THEME = 'lara-light-blue';
+const DEFAULT_THEME = 'light';
 
 // Get initial theme from localStorage or use default
 const getInitialTheme = (): string => {
@@ -20,12 +20,7 @@ export const useThemeStore = create<ThemeStore>((set) => ({
     // Update localStorage
     localStorage.setItem(STORAGE_KEY, theme);
 
-    // Update theme link in DOM (will be created in index.html)
-    const themeLink = document.getElementById('theme-link') as HTMLLinkElement;
-    if (themeLink) {
-      themeLink.href = `/node_modules/primereact/resources/themes/${theme}/theme.css`;
-    }
-
+    // Theme switching is handled by loadTheme in App.tsx
     set({ currentTheme: theme });
   },
 }));

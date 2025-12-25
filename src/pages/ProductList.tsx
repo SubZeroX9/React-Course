@@ -58,7 +58,7 @@ const ProductList: FC = () => {
   const priceBodyTemplate = (rowData: Product) => {
     return (
       <div style={{ textAlign: 'center' }}>
-        <span style={{ fontWeight: '600', color: '#16a34a' }}>${rowData.price}</span>
+        <span style={{ fontWeight: '600', color: 'var(--green-600)' }}>${rowData.price}</span>
       </div>
     );
   };
@@ -68,8 +68,8 @@ const ProductList: FC = () => {
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <span style={{
           padding: '0.25rem 0.5rem',
-          backgroundColor: '#dbeafe',
-          color: '#1e40af',
+          backgroundColor: 'var(--primary-100)',
+          color: 'var(--primary-700)',
           fontSize: '0.75rem',
           borderRadius: '0.25rem'
         }}>
@@ -94,21 +94,24 @@ const ProductList: FC = () => {
           label={t('buttons.viewDetails', { ns: 'common' })}
           icon="pi pi-eye"
           size="small"
+          text
           onClick={() => navigate(`/products/${rowData.id}`)}
         />
       </div>
     );
   };
 
-  if (error) return <p className="p-4 text-red-500">{t('error')}: {error.message}</p>;
+  if (error) return <p className="p-4" style={{ color: 'var(--red-500)' }}>{t('error')}: {error.message}</p>;
 
   return (
     <div className="w-full min-h-screen flex flex-col">
       <div className={`p-6 flex-1 transition-all duration-300 ${isOpen ? 'rtl:mr-64 ltr:ml-64' : 'rtl:mr-0 ltr:ml-0'}`}>
-        <h1 className="text-2xl font-bold mb-4">{t('title')}</h1>
+        <h1 className="text-2xl font-bold mb-4" style={{ color: 'var(--text-color)' }}>
+          {t('title')}
+        </h1>
 
         {data && (
-          <p className="text-sm text-gray-600 mb-4">
+          <p className="text-sm mb-4" style={{ color: 'var(--text-color-secondary)' }}>
             {t('resultsCount', { count: data.total })}
           </p>
         )}

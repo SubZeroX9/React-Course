@@ -1,4 +1,5 @@
 export { FilterSidebar } from './FilterSidebar'
+export { Footer } from './Footer'
 export { Header } from './Header'
 export { LanguageSwitcher } from './LanguageSwitcher'
 export { ProductCard } from './ProductCard'

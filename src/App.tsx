@@ -3,10 +3,10 @@ import { useEffect } from 'react'
 import ProductList from '@pages/ProductList'
 import ProductDetail from '@pages/ProductDetail'
 import { SidebarProvider } from '@context/SidebarProvider'
-import { Header, FilterSidebar, ToastContainer } from '@lib/components'
+import { Header, FilterSidebar, Footer, ToastContainer } from '@lib/components'
 import { useRTL } from '@hooks/useRTL'
 import { useThemeStore } from '@stores/themeStore'
-import { loadTheme } from '@lib/utils/themeLoader'
+import { loadTheme, type ThemeName } from '@lib/utils/themeLoader'
 import './App.css'
 
 function App() {
@@ -17,13 +17,16 @@ function App() {
   const { currentTheme } = useThemeStore();
 
   useEffect(() => {
-    loadTheme(currentTheme);
+    loadTheme(currentTheme as ThemeName);
   }, [currentTheme]);
 
   return (
     <Router>
       <SidebarProvider>
-        <div className="min-h-screen bg-gray-50">
+        <div
+          className="min-h-screen"
+          style={{ backgroundColor: 'var(--surface-ground)' }}
+        >
           <Header />
           <FilterSidebar />
           <main>
@@ -33,6 +36,7 @@ function App() {
               <Route path="/products/:id" element={<ProductDetail />} />
             </Routes>
           </main>
+          <Footer />
           <ToastContainer />
         </div>
       </SidebarProvider>

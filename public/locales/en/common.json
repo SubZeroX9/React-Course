@@ -8,8 +8,10 @@
     "close": "Close",
     "apply": "Apply",
     "clear": "Clear",
+    "search": "Search",
     "viewDetails": "View Details"
   },
+  "filters": "Filters",
   "loading": "Loading...",
   "pleaseWait": "Please wait...",
   "error": "An error occurred",

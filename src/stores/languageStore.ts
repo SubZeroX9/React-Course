@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import i18n from '../i18n/config';
+import i18n from '../i18n.config';
 
 interface LanguageStore {
   currentLanguage: string;

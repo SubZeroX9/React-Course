@@ -1,11 +1,12 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import './i18n/config'
+import './i18n.config'
 
 // PrimeReact imports (theme loaded dynamically via index.html)
 import 'primereact/resources/primereact.min.css'
 import 'primeicons/primeicons.css'
+import './primereact-overrides.css'
 
 import App from './App.tsx'
 import { QueryClient, QueryClientProvider, QueryCache, MutationCache } from '@tanstack/react-query';
