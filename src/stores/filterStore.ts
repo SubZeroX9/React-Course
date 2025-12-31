@@ -6,6 +6,8 @@ interface FilterState {
   category: string;
   page: number;
   pageSize: number;
+  sortBy: string;
+  order: 'asc' | 'desc';
 
   setSearchInput: (input: string) => void;
   applySearch: () => void;
@@ -13,6 +15,7 @@ interface FilterState {
   setCategory: (category: string) => void;
   setPage: (page: number) => void;
   setPageSize: (size: number) => void;
+  setSort: (sortBy: string, order: 'asc' | 'desc') => void;
   resetFilters: () => void;
 }
 
@@ -24,6 +27,8 @@ export const useFilterStore = create<FilterState>((set, get) => ({
   category: '',
   page: 1,
   pageSize: DEFAULT_PAGE_SIZE,
+  sortBy: '',
+  order: 'asc',
 
   setSearchInput: (input) => set({ searchInput: input }),
 
@@ -55,11 +60,19 @@ export const useFilterStore = create<FilterState>((set, get) => ({
     page: 1
   }),
 
+  setSort: (sortBy, order) => set({
+    sortBy,
+    order,
+    page: 1
+  }),
+
   resetFilters: () => set({
     search: '',
     searchInput: '',
     category: '',
     page: 1,
     pageSize: DEFAULT_PAGE_SIZE,
+    sortBy: '',
+    order: 'asc',
   }),
 }));

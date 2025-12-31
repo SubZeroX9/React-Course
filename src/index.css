@@ -16,3 +16,19 @@
 .animate-slide-in-left {
   animation: slide-in-left 0.3s ease-out;
 }
+
+/* Force PrimeReact DataTable gridlines */
+.p-datatable.p-datatable-gridlines .p-datatable-thead > tr > th,
+.p-datatable.p-datatable-gridlines .p-datatable-tbody > tr > td,
+.p-datatable.p-datatable-gridlines .p-datatable-tfoot > tr > td {
+  border: 1px solid #dee2e6 !important;
+}
+
+/* Reduce DataTable row height */
+.p-datatable .p-datatable-tbody > tr > td {
+  padding: 0.25rem 0.5rem !important;
+}
+
+.p-datatable .p-datatable-thead > tr > th {
+  padding: 0.5rem !important;
+}

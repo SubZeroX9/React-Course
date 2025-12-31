@@ -1,0 +1,66 @@
+/* PrimeReact Component Overrides */
+
+/* Ensure input borders are visible */
+.p-inputtext {
+  border: 1px solid var(--surface-border) !important;
+}
+
+.p-inputtext:enabled:hover {
+  border-color: var(--primary-color) !important;
+}
+
+.p-inputtext:enabled:focus {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--primary-color) 20%, transparent) !important;
+}
+
+/* Ensure dropdown borders are visible */
+.p-dropdown {
+  border: 1px solid var(--surface-border) !important;
+}
+
+.p-dropdown:not(.p-disabled):hover {
+  border-color: var(--primary-color) !important;
+}
+
+.p-dropdown:not(.p-disabled).p-focus {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--primary-color) 20%, transparent) !important;
+}
+
+/* Dropdown panel border */
+.p-dropdown-panel {
+  border: 1px solid var(--surface-border) !important;
+}
+
+/* Button borders - ensure all button types have visible borders */
+.p-button {
+  border: 1px solid transparent !important;
+}
+
+/* Primary buttons (filled) */
+.p-button:not(.p-button-outlined):not(.p-button-text) {
+  border-color: var(--primary-color) !important;
+}
+
+/* Outlined buttons */
+.p-button.p-button-outlined {
+  border: 1px solid var(--primary-color) !important;
+  background: transparent !important;
+}
+
+.p-button.p-button-outlined:enabled:hover {
+  background: color-mix(in srgb, var(--primary-color) 10%, transparent) !important;
+  border-color: var(--primary-color) !important;
+}
+
+/* Text buttons - no border but ensure proper styling */
+.p-button.p-button-text {
+  border: 1px solid transparent !important;
+}
+
+/* DataTable borders */
+.p-datatable .p-datatable-thead > tr > th,
+.p-datatable .p-datatable-tbody > tr > td {
+  border: 1px solid var(--surface-border) !important;
+}

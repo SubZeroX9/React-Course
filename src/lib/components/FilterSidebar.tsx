@@ -1,12 +1,17 @@
 import type { FC } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useSidebar } from '@hooks/useSidebar';
 import { useFilterStore } from '@stores/filterStore';
 import { useCategories } from '@hooks/useCategories';
+import { Dropdown } from 'primereact/dropdown';
+import { InputText } from 'primereact/inputtext';
+import { Button } from 'primereact/button';
 
 export const FilterSidebar: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useTranslation('products');
   const { isOpen, close } = useSidebar();
   const { data: categories, isLoading: categoriesLoading } = useCategories();
 
@@ -57,17 +62,23 @@ export const FilterSidebar: FC = () => {
       {/* Sidebar - toggleable on all screen sizes */}
       <aside
         className={`
-          fixed top-[57px] left-0 h-[calc(100vh-57px)] w-64 bg-white border-r z-50 flex-shrink-0
-          transform transition-transform duration-300 ease-in-out
-          ${isOpen ? 'translate-x-0 shadow-lg' : '-translate-x-full'}
+          fixed top-[57px] h-[calc(100vh-57px)] w-64 z-50 flex-shrink-0
+          transition-transform duration-300 ease-in-out
+          rtl:right-0 ltr:left-0 bg-prime-surface-0
+          ${isOpen
+            ? 'translate-x-0 shadow-lg border-r border-prime-surface'
+            : 'rtl:translate-x-full ltr:-translate-x-full'
+          }
         `}
       >
         <div className="p-4 h-full overflow-y-auto">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-semibold">Filters</h2>
+            <h2 className="text-lg font-semibold text-prime-text">
+              {t('filters', { ns: 'common' })}
+            </h2>
             <button
               onClick={close}
-              className="p-1 hover:bg-gray-100 rounded"
+              className="p-1 rounded text-prime-text hover:bg-prime-hover transition-colors duration-200"
               aria-label="Close sidebar"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -78,87 +89,102 @@ export const FilterSidebar: FC = () => {
 
           {/* Search Section */}
           <div className="mb-6">
-            <label htmlFor="sidebar-search" className="block text-sm font-medium text-gray-700 mb-2">
-              Search Products
+            <label
+              htmlFor="sidebar-search"
+              className="block text-sm font-medium mb-2 text-prime-text"
+            >
+              {t('searchByName')}
             </label>
-            <input
+            <InputText
               id="sidebar-search"
               type="text"
-              placeholder="Search..."
+              placeholder={t('searchPlaceholder')}
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
               onKeyDown={handleSearchKeyDown}
               disabled={!!category}
-              className="w-full border rounded px-3 py-2 text-sm disabled:bg-gray-100 disabled:cursor-not-allowed"
+              className="w-full"
             />
             <div className="flex gap-2 mt-2">
-              <button
+              <Button
+                label={t('buttons.search', { ns: 'common' })}
                 onClick={handleSearchApply}
                 disabled={!!category}
-                className="flex-1 px-3 py-1.5 bg-blue-500 text-white rounded text-sm hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                Search
-              </button>
+                className="flex-1"
+                size="small"
+              />
               {search && (
-                <button
+                <Button
+                  label={t('clearFilters')}
                   onClick={clearSearch}
-                  className="px-3 py-1.5 border rounded text-sm hover:bg-gray-100"
-                >
-                  Clear
-                </button>
+                  outlined
+                  size="small"
+                />
               )}
             </div>
             {category && (
-              <p className="text-xs text-gray-500 mt-2">
-                Clear category to enable search
+              <p className="text-xs mt-2 text-prime-text-secondary">
+                {t('clearFilters')}
               </p>
             )}
           </div>
 
           {/* Category Section */}
           <div className="mb-6">
-            <label htmlFor="sidebar-category" className="block text-sm font-medium text-gray-700 mb-2">
-              Category
-            </label>
-            <select
-              id="sidebar-category"
-              value={category}
-              onChange={(e) => handleCategoryChange(e.target.value)}
-              disabled={categoriesLoading}
-              className="w-full border rounded px-3 py-2 text-sm"
+            <label
+              htmlFor="sidebar-category"
+              className="block text-sm font-medium mb-2 text-prime-text"
             >
-              <option value="">All Categories</option>
-              {categories?.map((cat) => (
-                <option key={cat} value={cat}>
-                  {cat.charAt(0).toUpperCase() + cat.slice(1).replaceAll('-', ' ')}
-                </option>
-              ))}
-            </select>
+              {t('categoryLabel')}
+            </label>
+            <Dropdown
+              inputId="sidebar-category"
+              value={category}
+              onChange={(e) => handleCategoryChange(e.value)}
+              options={[
+                { label: t('allCategories'), value: '' },
+                ...(categories?.map((cat) => ({
+                  label: cat.charAt(0).toUpperCase() + cat.slice(1).replaceAll('-', ' '),
+                  value: cat
+                })) || [])
+              ]}
+              disabled={categoriesLoading}
+              placeholder={t('allCategories')}
+              className="w-full"
+            />
           </div>
 
           {/* Active Filters Summary */}
           {(search || category) && (
-            <div className="pt-4 border-t">
-              <h3 className="text-sm font-medium text-gray-700 mb-2">Active Filters</h3>
+            <div className="pt-4 border-t border-prime-surface">
+              <h3 className="text-sm font-medium mb-2 text-prime-text">
+                {t('activeFilters')}
+              </h3>
               <div className="flex flex-wrap gap-2">
                 {search && (
-                  <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">
-                    Search: {search}
-                    <button onClick={clearSearch} className="hover:text-blue-600">
-                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </button>
+                  <span className="inline-flex items-center gap-1 px-2 py-1 text-xs rounded bg-prime-primary-100 text-prime-primary-700">
+                    {t('searchByName')}: {search}
+                    <Button
+                      icon="pi pi-times"
+                      onClick={clearSearch}
+                      text
+                      rounded
+                      size="small"
+                      className="w-4 h-4 p-0 text-prime-primary-700"
+                    />
                   </span>
                 )}
                 {category && (
-                  <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-800 text-xs rounded">
+                  <span className="inline-flex items-center gap-1 px-2 py-1 text-xs rounded bg-prime-green-100 text-prime-green-700">
                     {category.charAt(0).toUpperCase() + category.slice(1).replaceAll('-', ' ')}
-                    <button onClick={() => setCategory('')} className="hover:text-green-600">
-                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </button>
+                    <Button
+                      icon="pi pi-times"
+                      onClick={() => setCategory('')}
+                      text
+                      rounded
+                      size="small"
+                      className="w-4 h-4 p-0 text-prime-green-700"
+                    />
                   </span>
                 )}
               </div>

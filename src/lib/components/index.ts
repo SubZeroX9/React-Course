@@ -1,5 +1,8 @@
 export { FilterSidebar } from './FilterSidebar'
+export { Footer } from './Footer'
 export { Header } from './Header'
+export { LanguageSwitcher } from './LanguageSwitcher'
 export { ProductCard } from './ProductCard'
 export { StarRating } from './StarRating'
+export { ThemeSwitcher } from './ThemeSwitcher'
 export { ToastContainer } from './ToastContainer'
