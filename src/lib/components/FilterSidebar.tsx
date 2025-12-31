@@ -64,31 +64,21 @@ export const FilterSidebar: FC = () => {
         className={`
           fixed top-[57px] h-[calc(100vh-57px)] w-64 z-50 flex-shrink-0
           transition-transform duration-300 ease-in-out
-          rtl:right-0 ltr:left-0
+          rtl:right-0 ltr:left-0 bg-prime-surface-0
           ${isOpen
-            ? 'translate-x-0 shadow-lg'
+            ? 'translate-x-0 shadow-lg border-r border-prime-surface'
             : 'rtl:translate-x-full ltr:-translate-x-full'
           }
         `}
-        style={{
-          backgroundColor: 'var(--surface-0)',
-          borderRight: isOpen ? '1px solid var(--surface-border)' : 'none'
-        }}
       >
         <div className="p-4 h-full overflow-y-auto">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-semibold" style={{ color: 'var(--text-color)' }}>
+            <h2 className="text-lg font-semibold text-prime-text">
               {t('filters', { ns: 'common' })}
             </h2>
             <button
               onClick={close}
-              className="p-1 rounded"
-              style={{
-                color: 'var(--text-color)',
-                transition: 'background-color 0.2s'
-              }}
-              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--surface-100)'}
-              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+              className="p-1 rounded text-prime-text hover:bg-prime-hover transition-colors duration-200"
               aria-label="Close sidebar"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -101,8 +91,7 @@ export const FilterSidebar: FC = () => {
           <div className="mb-6">
             <label
               htmlFor="sidebar-search"
-              className="block text-sm font-medium mb-2"
-              style={{ color: 'var(--text-color)' }}
+              className="block text-sm font-medium mb-2 text-prime-text"
             >
               {t('searchByName')}
             </label>
@@ -134,7 +123,7 @@ export const FilterSidebar: FC = () => {
               )}
             </div>
             {category && (
-              <p className="text-xs mt-2" style={{ color: 'var(--text-color-secondary)' }}>
+              <p className="text-xs mt-2 text-prime-text-secondary">
                 {t('clearFilters')}
               </p>
             )}
@@ -144,8 +133,7 @@ export const FilterSidebar: FC = () => {
           <div className="mb-6">
             <label
               htmlFor="sidebar-category"
-              className="block text-sm font-medium mb-2"
-              style={{ color: 'var(--text-color)' }}
+              className="block text-sm font-medium mb-2 text-prime-text"
             >
               {t('categoryLabel')}
             </label>
@@ -168,19 +156,13 @@ export const FilterSidebar: FC = () => {
 
           {/* Active Filters Summary */}
           {(search || category) && (
-            <div className="pt-4" style={{ borderTop: '1px solid var(--surface-border)' }}>
-              <h3 className="text-sm font-medium mb-2" style={{ color: 'var(--text-color)' }}>
+            <div className="pt-4 border-t border-prime-surface">
+              <h3 className="text-sm font-medium mb-2 text-prime-text">
                 {t('activeFilters')}
               </h3>
               <div className="flex flex-wrap gap-2">
                 {search && (
-                  <span
-                    className="inline-flex items-center gap-1 px-2 py-1 text-xs rounded"
-                    style={{
-                      backgroundColor: 'var(--primary-100)',
-                      color: 'var(--primary-700)'
-                    }}
-                  >
+                  <span className="inline-flex items-center gap-1 px-2 py-1 text-xs rounded bg-prime-primary-100 text-prime-primary-700">
                     {t('searchByName')}: {search}
                     <Button
                       icon="pi pi-times"
@@ -188,19 +170,12 @@ export const FilterSidebar: FC = () => {
                       text
                       rounded
                       size="small"
-                      className="w-4 h-4 p-0"
-                      style={{ color: 'var(--primary-700)' }}
+                      className="w-4 h-4 p-0 text-prime-primary-700"
                     />
                   </span>
                 )}
                 {category && (
-                  <span
-                    className="inline-flex items-center gap-1 px-2 py-1 text-xs rounded"
-                    style={{
-                      backgroundColor: 'var(--green-100)',
-                      color: 'var(--green-700)'
-                    }}
-                  >
+                  <span className="inline-flex items-center gap-1 px-2 py-1 text-xs rounded bg-prime-green-100 text-prime-green-700">
                     {category.charAt(0).toUpperCase() + category.slice(1).replaceAll('-', ' ')}
                     <Button
                       icon="pi pi-times"
@@ -208,8 +183,7 @@ export const FilterSidebar: FC = () => {
                       text
                       rounded
                       size="small"
-                      className="w-4 h-4 p-0"
-                      style={{ color: 'var(--green-700)' }}
+                      className="w-4 h-4 p-0 text-prime-green-700"
                     />
                   </span>
                 )}

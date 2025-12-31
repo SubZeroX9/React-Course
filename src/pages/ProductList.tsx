@@ -56,11 +56,11 @@ const ProductList: FC = () => {
   // Column body templates
   const imageBodyTemplate = (rowData: Product) => {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <div className="flex justify-center items-center">
         <img
           src={rowData.thumbnail}
           alt={rowData.title}
-          style={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: '4px' }}
+          className="w-[60px] h-[60px] object-cover rounded"
         />
       </div>
     );
@@ -68,22 +68,16 @@ const ProductList: FC = () => {
 
   const priceBodyTemplate = (rowData: Product) => {
     return (
-      <div style={{ textAlign: 'center' }}>
-        <span style={{ fontWeight: '600', color: 'var(--green-600)' }}>${rowData.price}</span>
+      <div className="text-center">
+        <span className="font-semibold text-prime-green-600">${rowData.price}</span>
       </div>
     );
   };
 
   const categoryBodyTemplate = (rowData: Product) => {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <span style={{
-          padding: '0.25rem 0.5rem',
-          backgroundColor: 'var(--primary-100)',
-          color: 'var(--primary-700)',
-          fontSize: '0.75rem',
-          borderRadius: '0.25rem'
-        }}>
+      <div className="flex justify-center items-center">
+        <span className="px-2 py-1 bg-prime-primary-100 text-prime-primary-700 text-xs rounded">
           {rowData.category}
         </span>
       </div>
@@ -92,7 +86,7 @@ const ProductList: FC = () => {
 
   const ratingBodyTemplate = (rowData: Product) => {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <div className="flex justify-center items-center">
         <StarRating rating={rowData.rating} />
       </div>
     );
@@ -100,7 +94,7 @@ const ProductList: FC = () => {
 
   const actionsBodyTemplate = (rowData: Product) => {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <div className="flex justify-center items-center">
         <Button
           label={t('buttons.viewDetails', { ns: 'common' })}
           icon="pi pi-eye"
@@ -112,17 +106,17 @@ const ProductList: FC = () => {
     );
   };
 
-  if (error) return <p className="p-4" style={{ color: 'var(--red-500)' }}>{t('error')}: {error.message}</p>;
+  if (error) return <p className="p-4 text-prime-red-500">{t('error')}: {error.message}</p>;
 
   return (
     <div className="w-full min-h-screen flex flex-col">
       <div className={`p-6 flex-1 transition-all duration-300 ${isOpen ? 'rtl:mr-64 ltr:ml-64' : 'rtl:mr-0 ltr:ml-0'}`}>
-        <h1 className="text-2xl font-bold mb-4" style={{ color: 'var(--text-color)' }}>
+        <h1 className="text-2xl font-bold mb-4 text-prime-text">
           {t('title')}
         </h1>
 
         {data && (
-          <p className="text-sm mb-4" style={{ color: 'var(--text-color-secondary)' }}>
+          <p className="text-sm mb-4 text-prime-text-secondary">
             {t('resultsCount', { count: data.total })}
           </p>
         )}

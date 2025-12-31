@@ -9,20 +9,13 @@ export const Footer: FC = () => {
   }
 
   return (
-    <footer
-      className="py-4 px-4 text-center text-sm border-t"
-      style={{
-        backgroundColor: 'var(--surface-0)',
-        borderColor: 'var(--surface-border)',
-        color: 'var(--text-color-secondary)'
-      }}
-    >
+    <footer className="py-4 px-4 text-center text-sm border-t bg-prime-surface-0 border-prime-surface text-prime-text-secondary">
       <Trans
         i18nKey="termsAgreement"
         ns="common"
         i18n={i18n}
         components={{
-          1: <strong style={{ color: 'var(--text-color)' }} />
+          1: <strong className="text-prime-text" />
         }}
       />
     </footer>

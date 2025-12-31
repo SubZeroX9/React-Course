@@ -15,7 +15,7 @@ export const ThemeSwitcher: FC = () => {
 
   return (
     <div className="flex items-center gap-2">
-      <label htmlFor="theme-select" className="text-sm font-medium" style={{ color: 'var(--text-color)' }}>
+      <label htmlFor="theme-select" className="text-sm font-medium text-prime-text">
         {t('theme.label')}:
       </label>
       <Dropdown
@@ -23,8 +23,7 @@ export const ThemeSwitcher: FC = () => {
         value={currentTheme}
         onChange={(e) => setTheme(e.value)}
         options={themeOptions}
-        className="text-sm"
-        style={{ minWidth: '100px' }}
+        className="text-sm min-w-[100px]"
       />
     </div>
   );

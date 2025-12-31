@@ -23,10 +23,7 @@ function App() {
   return (
     <Router>
       <SidebarProvider>
-        <div
-          className="min-h-screen"
-          style={{ backgroundColor: 'var(--surface-ground)' }}
-        >
+        <div className="min-h-screen bg-prime-surface-ground">
           <Header />
           <FilterSidebar />
           <main>
