@@ -67,7 +67,8 @@
   "required": "*",
   "buttons": {
     "submit": "Create Account",
-    "submitting": "Submitting..."
+    "submitting": "Submitting...",
+    "clear": "Clear Form"
   },
   "validation": {
     "username": {

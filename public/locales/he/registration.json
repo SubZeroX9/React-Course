@@ -67,7 +67,8 @@
   "required": "*",
   "buttons": {
     "submit": "צור חשבון",
-    "submitting": "שולח..."
+    "submitting": "שולח...",
+    "clear": "נקה טופס"
   },
   "validation": {
     "username": {

@@ -58,6 +58,7 @@ export default function Registration() {
     handleSubmit,
     watch,
     setValue,
+    reset,
     formState: { errors, isValid },
   } = useForm<RegistrationFormData>({
     resolver: zodResolver(registrationSchema),
@@ -112,6 +113,13 @@ export default function Registration() {
 
     setIsSubmitting(false);
     alert(t('success'));
+  };
+
+  const handleClearForm = () => {
+    // Reset form to default values
+    reset();
+    // Clear localStorage
+    localStorage.removeItem(STORAGE_KEY);
   };
 
   return (
@@ -459,12 +467,20 @@ export default function Registration() {
               </div>
             </div>
 
-            {/* Submit Button */}
-            <div className="pt-4">
+            {/* Action Buttons */}
+            <div className="pt-4 flex flex-col sm:flex-row gap-3">
+              <button
+                type="button"
+                onClick={handleClearForm}
+                disabled={isSubmitting}
+                className="sm:w-auto px-6 py-3 border border-gray-300 text-gray-700 rounded-md font-semibold hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 disabled:bg-gray-100 disabled:cursor-not-allowed transition-colors"
+              >
+                {t('buttons.clear')}
+              </button>
               <button
                 type="submit"
                 disabled={!isValid || isSubmitting}
-                className="w-full bg-blue-600 text-white py-3 px-4 rounded-md font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                className="flex-1 bg-blue-600 text-white py-3 px-4 rounded-md font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
               >
                 {isSubmitting ? t('buttons.submitting') : t('buttons.submit')}
               </button>
