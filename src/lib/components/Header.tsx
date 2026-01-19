@@ -34,7 +34,7 @@ export const Header: FC = () => {
             to="/register"
             className="px-4 py-2 text-sm font-medium text-prime-text hover:bg-prime-hover rounded-lg transition-colors duration-200"
           >
-            Sign Up
+            {t('header.signUp')}
           </Link>
           <ThemeSwitcher />
           <LanguageSwitcher />
