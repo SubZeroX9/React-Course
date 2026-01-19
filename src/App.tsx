@@ -2,6 +2,7 @@ import {BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-do
 import { useEffect } from 'react'
 import ProductList from '@pages/ProductList'
 import ProductDetail from '@pages/ProductDetail'
+import Registration from '@pages/Registration'
 import { SidebarProvider } from '@context/SidebarProvider'
 import { Header, FilterSidebar, Footer, ToastContainer } from '@lib/components'
 import { useRTL } from '@hooks/useRTL'
@@ -31,6 +32,7 @@ function App() {
               <Route path="/" element={<Navigate to="/products" replace />} />
               <Route path="/products" element={<ProductList />} />
               <Route path="/products/:id" element={<ProductDetail />} />
+              <Route path="/register" element={<Registration />} />
             </Routes>
           </main>
           <Footer />
