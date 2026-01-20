@@ -95,33 +95,32 @@ app (can depend on all libs)
 
 ## Nx Affected Demo
 
-Affected projects are determined based on git changes. On the `nx-migration` branch (created for this homework), all projects show as affected since it's a new branch diverging from `main`:
+Affected projects are determined based on git changes. Here's a demonstration showing how Nx only runs tasks for changed projects:
 
+**Step 1**: Made a small change to ToastContainer.tsx in libs/ui (changed toast colors from 500 to 600 shades)
+
+**Step 2**: Show which projects are affected:
 ```bash
-$ npx nx show projects --affected
+$ npx nx show projects --affected --base=HEAD~1 --head=HEAD
 
-react-app
-api
-hooks
 ui
-context
-i18n
-stores
-types
-utils
+react-app
 ```
 
-Running affected tasks:
-```bash
-$ npx nx affected -t lint,build,test
+Only `ui` (where the change was made) and `react-app` (which depends on ui) are affected!
 
-NX   Affected criteria defaulted to --base=main --head=HEAD
+**Step 3**: Run affected tasks:
+```bash
+$ npx nx affected -t lint,build --base=HEAD~1 --head=HEAD
 
 NX   Running targets lint, build for project react-app:
+
 - react-app
+
+✓ Successfully ran targets lint, build for project react-app
 ```
 
-Nx intelligently runs tasks only for projects affected by changes, improving CI/CD performance by skipping unchanged projects.
+Nx intelligently runs tasks only for projects affected by changes, improving CI/CD performance by skipping unchanged projects (api, stores, hooks, context, i18n, types, utils were all skipped).
 
 ## Tech Stack
 
