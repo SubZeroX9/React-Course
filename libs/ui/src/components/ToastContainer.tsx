@@ -4,14 +4,14 @@ import { useToastStore, type ToastType } from '@react-app/stores';
 const getToastStyles = (type: ToastType) => {
   switch (type) {
     case 'success':
-      return 'bg-green-500 text-white';
+      return 'bg-green-600 text-white';
     case 'error':
-      return 'bg-red-500 text-white';
+      return 'bg-red-600 text-white';
     case 'warning':
-      return 'bg-yellow-500 text-white';
+      return 'bg-yellow-600 text-white';
     case 'info':
     default:
-      return 'bg-blue-500 text-white';
+      return 'bg-blue-600 text-white';
   }
 };
 
