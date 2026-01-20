@@ -1,7 +1,8 @@
 {
   "header": {
     "logo": "Product Store",
-    "menu": "Menu"
+    "menu": "Menu",
+    "signUp": "Sign Up"
   },
   "buttons": {
     "back": "Back",

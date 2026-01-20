@@ -25,6 +25,7 @@ dist-ssr
 
 # Claude
 .claude
+dev-docs/
 
 # Playwright
 test-results/
