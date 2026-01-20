@@ -17,7 +17,7 @@ const ProductList = () => {
     const { search, category, page, pageSize, sortBy, order, setPage, setPageSize, setSort, } = useFilterStore();
     const { data, isLoading, isFetching, error } = useProducts(page, pageSize, search || undefined, category || undefined, sortBy || undefined, order);
     const handlePageChange = (event) => {
-        setPage(event.page + 1); // PrimeReact pages are 0-indexed
+        setPage((event.page ?? 0) + 1); // PrimeReact pages are 0-indexed
         if (event.rows !== pageSize) {
             setPageSize(event.rows);
         }

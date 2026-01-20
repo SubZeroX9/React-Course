@@ -41,7 +41,7 @@ const ProductList: FC = () => {
   );
 
   const handlePageChange = (event: DataTablePageEvent) => {
-    setPage(event.page + 1); // PrimeReact pages are 0-indexed
+    setPage((event.page ?? 0) + 1); // PrimeReact pages are 0-indexed
     if (event.rows !== pageSize) {
       setPageSize(event.rows);
     }
