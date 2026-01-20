@@ -1,5 +1,5 @@
 import { useParams, Link } from 'react-router-dom';
-import { useProduct } from '@hooks/useProducts';
+import { useProduct } from '@react-app/hooks';
 import { useTranslation } from 'react-i18next';
 import type { FC } from 'react';
 

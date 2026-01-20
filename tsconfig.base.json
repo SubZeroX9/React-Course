@@ -1,0 +1,32 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "target": "ES2021",
+    "lib": ["ES2021", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "types": ["vite/client"],
+    "baseUrl": ".",
+    "paths": {
+      "@lib/*": ["src/lib/*"],
+      "@components/*": ["src/components/*"],
+      "@pages/*": ["src/pages/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@context/*": ["src/context/*"],
+      "@stores/*": ["src/stores/*"],
+      "@react-app/types": ["libs/types/src/index.ts"],
+      "@react-app/utils": ["libs/utils/src/index.ts"],
+      "@react-app/api": ["libs/api/src/index.ts"],
+      "@react-app/stores": ["libs/stores/src/index.ts"],
+      "@react-app/hooks": ["libs/hooks/src/index.ts"],
+      "@react-app/context": ["libs/context/src/index.ts"],
+      "@react-app/i18n": ["libs/i18n/src/index.ts"],
+      "@react-app/ui": ["libs/ui/src/index.ts"]
+    }
+  }
+}

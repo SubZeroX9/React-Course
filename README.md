@@ -1,85 +1,152 @@
-# React Store App - Advanced 1 Homework
+# React Vite Nx Monorepo
 
-## Step 0 - Prep (Path A)
+A React 19 application built with Vite, organized as an Nx monorepo with proper library structure and module boundaries.
 
-Starting Advanced 1 from commit `b4e02aa2a74cbbe42ff2e3acf3a58a0f87ba5355`.
+## How to Run
 
-API used: DummyJSON (https://dummyjson.com)
+### Development
+```bash
+npx nx serve react-app
+# Or use npm script
+npm run dev
+```
 
----
+### Build
+```bash
+npx nx build react-app
+# Or use npm script
+npm run build
+```
 
-## Step 1 - i18n Setup
+### Lint
+```bash
+# Lint the main app
+npx nx lint react-app
 
-**Locales:** English (en), Hebrew (he)
+# Lint all projects
+npx nx run-many -t lint --all
+```
 
-**Namespaces:**
-- `common` - header, buttons, generic UI labels, theme/language switcher, footer
-- `products` - product list, detail page strings
+### Test
+```bash
+# Run E2E tests
+npx nx test:e2e react-app
+# Or use npm script
+npm run test:e2e
+```
 
-**Screenshot:**
-![English Language](./Images/language-en.png)
-![Hebrew Language](./Images/language-he.png)
+### Project Graph
+```bash
+npx nx graph
+```
 
----
+## Workspace Structure
 
-## Step 2 - i18n Required Features
+### Apps
+- **react-app**: Main React application with Vite, React Router, TanStack Query, and PrimeReact UI
 
-**Example keys and locations:**
+### Libraries
 
-1. **Interpolation:**
-   - Key: `products:resultsCount` → `"Showing {{count}} results"`
-   - Location: Products list page, below title
+#### Required Libraries (Homework)
+- **ui**: Reusable UI components (ToastContainer, Header, Footer, ProductCard, FilterSidebar, ThemeSwitcher, LanguageSwitcher, StarRating)
+- **hooks**: TanStack Query hooks (useProducts, useProduct, useCategories, usePrefetchProduct)
+- **i18n**: Internationalization (i18next config, useRTL hook, language store, translations for en/he)
 
-2. **Pluralization:**
-   - Key: `products:resultsCount` uses `count` for plural forms
-   - Location: Products list page (same as interpolation)
+#### Additional Libraries (Better Organization)
+- **stores**: Zustand state management (filterStore, themeStore, toastStore)
+- **context**: React Context providers (SidebarContext, SidebarProvider, useLocalStorage, useSidebar)
+- **api**: API client and functions (Axios client, getProducts, getCategoryList, getProductById)
+- **types**: Shared TypeScript interfaces (Product, ProductSummary, PaginatedResponse)
+- **utils**: Utility functions (queryKeys for TanStack Query, themeLoader for dynamic PrimeReact themes)
 
-3. **Trans Component:**
-   - Key: `common:termsAgreement` → `"By using this site, you agree to our <1>Terms of Service</1>"`
-   - Location: Footer component (bold text embedded in translation)
+## Architecture Rules (Module Boundaries)
 
----
+Nx enforces clean architecture through ESLint `@nx/enforce-module-boundaries` rules:
 
-## Step 3 - Language Switcher + Persistence
+### Dependency Hierarchy
+```
+types (no dependencies)
+  ↓
+utils (depends on: types)
+  ↓
+api, stores (depend on: types, utils)
+  ↓
+hooks (depends on: api, stores, types, utils)
+  ↓
+context (depends on: stores, hooks, types, utils)
+i18n (depends on: stores, types, utils)
+  ↓
+ui (depends on: hooks, stores, context, i18n, types, utils)
+  ↓
+app (can depend on all libs)
+```
 
-**How persistence works:**
-- i18next-browser-languagedetector saves selected language to localStorage under key `app-language`
-- On page load, detector reads from localStorage and restores the language
-- If no language stored, defaults to English
+### Rules Enforced
+- **Apps** can depend on all libs
+- **UI** can depend on: hooks, stores, context, i18n, types, utils
+- **Hooks** can depend on: api, stores, types, utils
+- **i18n** can depend on: stores, types, utils
+- **Stores** can depend on: types, utils
+- **Context** can depend on: stores, hooks, types, utils
+- **API** can depend on: types, utils
+- **Utils** can depend on: types
+- **Types** has no dependencies
+- **Libs cannot import from apps** (enforced automatically)
 
-**Screenshots:**
-![Language Switch and Persistence](./Images/language-persistence.gif)
+## Nx Affected Demo
 
----
+Affected projects are determined based on git changes. Here's a demonstration showing how Nx only runs tasks for changed projects:
 
-## Step 4 - RTL Mode
+**Step 1**: Made a small change to ToastContainer.tsx in libs/ui (changed toast colors from 500 to 600 shades)
 
-**RTL Fixes:**
-1. **Sidebar positioning** → Fixed with Tailwind `ltr:ml-64 rtl:mr-64` classes
-2. **Filter sidebar positioning** → Fixed with `ltr:left-0 rtl:right-0` classes
+**Step 2**: Show which projects are affected:
+```bash
+$ npx nx show projects --affected --base=HEAD~1 --head=HEAD
 
-**Screenshot:**
-![RTL Mode](./Images/language-persistence.gif)
+ui
+react-app
+```
 
----
+Only `ui` (where the change was made) and `react-app` (which depends on ui) are affected!
 
-## Step 5 - PrimeReact DataTable
+**Step 3**: Run affected tasks:
+```bash
+$ npx nx affected -t lint,build --base=HEAD~1 --head=HEAD
 
-**DataTable Features Implemented:**
-1. **Sorting** - Title, Price, and Rating columns (server-side sorting via API)
-2. **Pagination** - Lazy pagination with page size options: 4, 8, 12
+NX   Running targets lint, build for project react-app:
 
-**Screenshot:**
-![DataTable](./Images/datatable.png)
+- react-app
 
----
+✓ Successfully ran targets lint, build for project react-app
+```
 
-## Step 6 - PrimeReact Theme Switcher
+Nx intelligently runs tasks only for projects affected by changes, improving CI/CD performance by skipping unchanged projects (api, stores, hooks, context, i18n, types, utils were all skipped).
 
-**localStorage key:** `app-theme`
+## Tech Stack
 
-**Default theme:** `light`
+- **React 19** with TypeScript (strict mode)
+- **Vite 7** for dev server and builds
+- **Nx** for monorepo management and caching
+- **React Router v7** for routing
+- **TanStack Query v5** for server state management
+- **Zustand** for global client state
+- **PrimeReact** for UI components
+- **i18next** for internationalization (English/Hebrew)
+- **React Hook Form + Zod** for form validation
+- **Tailwind CSS** for styling
+- **Playwright** for E2E testing
 
-**Screenshots:**
-![Light Theme](./Images/theme-light.png)
-![Dark Theme](./Images/theme-dark.png)
+## Path Aliases
+
+TypeScript and Vite are configured with path aliases for cleaner imports:
+
+```typescript
+@react-app/types     → libs/types/src/index.ts
+@react-app/utils     → libs/utils/src/index.ts
+@react-app/api       → libs/api/src/index.ts
+@react-app/stores    → libs/stores/src/index.ts
+@react-app/hooks     → libs/hooks/src/index.ts
+@react-app/context   → libs/context/src/index.ts
+@react-app/i18n      → libs/i18n/src/index.ts
+@react-app/ui        → libs/ui/src/index.ts
+```

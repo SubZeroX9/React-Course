@@ -1,14 +1,14 @@
-import { useProducts } from '@hooks/useProducts';
-import { useSidebar } from '@hooks/useSidebar';
-import { useFilterStore } from '@stores/filterStore';
+import { useProducts } from '@react-app/hooks';
+import { useSidebar } from '@react-app/context';
+import { useFilterStore } from '@react-app/stores';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { StarRating } from '@lib/components';
+import { StarRating } from '@react-app/ui';
 import type { FC } from 'react';
-import type { Product } from '@lib/types/Product';
+import type { Product } from '@react-app/types';
 
 // PrimeReact imports
-import { DataTable } from 'primereact/datatable';
+import { DataTable, DataTablePageEvent, DataTableSortEvent } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 
@@ -40,14 +40,14 @@ const ProductList: FC = () => {
     order
   );
 
-  const handlePageChange = (event: any) => {
-    setPage(event.page + 1); // PrimeReact pages are 0-indexed
+  const handlePageChange = (event: DataTablePageEvent) => {
+    setPage((event.page ?? 0) + 1); // PrimeReact pages are 0-indexed
     if (event.rows !== pageSize) {
       setPageSize(event.rows);
     }
   };
 
-  const handleSort = (event: any) => {
+  const handleSort = (event: DataTableSortEvent) => {
     const newSortBy = event.sortField || '';
     const newOrder = event.sortOrder === 1 ? 'asc' : event.sortOrder === -1 ? 'desc' : 'asc';
     setSort(newSortBy, newOrder);

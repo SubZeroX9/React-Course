@@ -1,0 +1,45 @@
+{
+  "title": "Products",
+  "searchByName": "Search by name",
+  "searchPlaceholder": "Search products...",
+  "categoryLabel": "Category",
+  "allCategories": "All Categories",
+  "clearFilters": "Clear all filters to enable search",
+  "activeFilters": "Active Filters",
+  "emptyState": "No products found",
+  "resultsCount": "Showing {{count}} products",
+  "resultsCount_one": "Showing 1 product",
+  "resultsCount_other": "Showing {{count}} products",
+  "columns": {
+    "image": "Image",
+    "title": "Title",
+    "price": "Price",
+    "category": "Category",
+    "rating": "Rating",
+    "actions": "Actions"
+  },
+  "pagination": {
+    "page": "Page",
+    "of": "of"
+  },
+  "details": {
+    "title": "Product Details",
+    "description": "Description",
+    "price": "Price",
+    "discount": "Discount",
+    "finalPrice": "Final Price",
+    "rating": "Rating",
+    "stock": "Stock",
+    "brand": "Brand",
+    "category": "Category",
+    "sku": "SKU",
+    "weight": "Weight",
+    "dimensions": "Dimensions",
+    "warranty": "Warranty Information",
+    "shipping": "Shipping Information",
+    "availability": "Availability",
+    "inStock": "In Stock",
+    "lowStock": "Low Stock",
+    "outOfStock": "Out of Stock"
+  }
+}
