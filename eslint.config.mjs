@@ -17,8 +17,40 @@ export default [
           allow: ['^.*/eslint(\\.base)?\\.config\\.[cm]?[jt]s$'],
           depConstraints: [
             {
-              sourceTag: '*',
-              onlyDependOnLibsWithTags: ['*'],
+              sourceTag: 'type:app',
+              onlyDependOnLibsWithTags: ['type:ui', 'type:hooks', 'type:i18n', 'type:stores', 'type:context', 'type:api', 'type:types', 'type:utils'],
+            },
+            {
+              sourceTag: 'type:ui',
+              onlyDependOnLibsWithTags: ['type:hooks', 'type:stores', 'type:context', 'type:types', 'type:utils', 'type:i18n'],
+            },
+            {
+              sourceTag: 'type:hooks',
+              onlyDependOnLibsWithTags: ['type:api', 'type:stores', 'type:types', 'type:utils'],
+            },
+            {
+              sourceTag: 'type:i18n',
+              onlyDependOnLibsWithTags: ['type:stores', 'type:types', 'type:utils'],
+            },
+            {
+              sourceTag: 'type:stores',
+              onlyDependOnLibsWithTags: ['type:types', 'type:utils'],
+            },
+            {
+              sourceTag: 'type:context',
+              onlyDependOnLibsWithTags: ['type:stores', 'type:hooks', 'type:types', 'type:utils'],
+            },
+            {
+              sourceTag: 'type:api',
+              onlyDependOnLibsWithTags: ['type:types', 'type:utils'],
+            },
+            {
+              sourceTag: 'type:utils',
+              onlyDependOnLibsWithTags: ['type:types'],
+            },
+            {
+              sourceTag: 'type:types',
+              onlyDependOnLibsWithTags: [],
             },
           ],
         },
