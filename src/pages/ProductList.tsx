@@ -8,7 +8,7 @@ import type { FC } from 'react';
 import type { Product } from '@react-app/types';
 
 // PrimeReact imports
-import { DataTable } from 'primereact/datatable';
+import { DataTable, DataTablePageEvent, DataTableSortEvent } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 
@@ -40,14 +40,14 @@ const ProductList: FC = () => {
     order
   );
 
-  const handlePageChange = (event: any) => {
+  const handlePageChange = (event: DataTablePageEvent) => {
     setPage(event.page + 1); // PrimeReact pages are 0-indexed
     if (event.rows !== pageSize) {
       setPageSize(event.rows);
     }
   };
 
-  const handleSort = (event: any) => {
+  const handleSort = (event: DataTableSortEvent) => {
     const newSortBy = event.sortField || '';
     const newOrder = event.sortOrder === 1 ? 'asc' : event.sortOrder === -1 ? 'desc' : 'asc';
     setSort(newSortBy, newOrder);
