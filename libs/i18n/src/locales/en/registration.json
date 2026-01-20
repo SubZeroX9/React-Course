@@ -1,0 +1,114 @@
+{
+  "title": "Create Your Account",
+  "fields": {
+    "username": {
+      "label": "Username",
+      "placeholder": "Enter username"
+    },
+    "firstName": {
+      "label": "First Name",
+      "placeholder": "Enter first name"
+    },
+    "lastName": {
+      "label": "Last Name",
+      "placeholder": "Enter last name"
+    },
+    "email": {
+      "label": "Email",
+      "placeholder": "Enter email address"
+    },
+    "phone": {
+      "label": "Phone Number",
+      "placeholder": "+1 (555) 123-4567"
+    },
+    "password": {
+      "label": "Password",
+      "placeholder": "Enter password"
+    },
+    "confirmPassword": {
+      "label": "Confirm Password",
+      "placeholder": "Confirm your password"
+    },
+    "age": {
+      "label": "Age"
+    },
+    "gender": {
+      "label": "Gender",
+      "male": "Male",
+      "female": "Female",
+      "other": "Other"
+    },
+    "country": {
+      "label": "Country",
+      "placeholder": "Select a country",
+      "options": {
+        "us": "United States",
+        "uk": "United Kingdom",
+        "ca": "Canada",
+        "au": "Australia",
+        "de": "Germany",
+        "fr": "France",
+        "il": "Israel",
+        "other": "Other"
+      }
+    },
+    "bio": {
+      "label": "Bio (Optional)",
+      "placeholder": "Tell us about yourself..."
+    },
+    "newsletter": {
+      "label": "Subscribe to newsletter",
+      "description": "Get updates and special offers via email"
+    },
+    "terms": {
+      "label": "I accept the terms and conditions"
+    }
+  },
+  "required": "*",
+  "buttons": {
+    "submit": "Create Account",
+    "submitting": "Submitting...",
+    "clear": "Clear Form"
+  },
+  "validation": {
+    "username": {
+      "min": "Username must be at least {{min}} characters",
+      "max": "Username must be at most {{max}} characters"
+    },
+    "email": {
+      "invalid": "Invalid email address"
+    },
+    "password": {
+      "min": "Password must be at least {{min}} characters",
+      "strength": "Password must contain at least one uppercase letter, one lowercase letter, and one number"
+    },
+    "confirmPassword": {
+      "noMatch": "Passwords don't match"
+    },
+    "firstName": {
+      "required": "First name is required"
+    },
+    "lastName": {
+      "required": "Last name is required"
+    },
+    "phone": {
+      "invalid": "Invalid phone number format"
+    },
+    "age": {
+      "min": "Must be at least {{min}} years old"
+    },
+    "gender": {
+      "required": "Please select a gender"
+    },
+    "country": {
+      "required": "Please select a country"
+    },
+    "bio": {
+      "max": "Bio must be at most {{max}} characters"
+    },
+    "terms": {
+      "required": "You must accept the terms and conditions"
+    }
+  },
+  "success": "Registration successful! Check console for submitted data."
+}

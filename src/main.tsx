@@ -1,7 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import './i18n.config'
+import '@react-app/i18n'
 
 // PrimeReact imports (theme loaded dynamically via index.html)
 import 'primereact/resources/primereact.min.css'
@@ -11,7 +11,7 @@ import './primereact-overrides.css'
 import App from './App.tsx'
 import { QueryClient, QueryClientProvider, QueryCache, MutationCache } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { useToastStore } from '@stores/toastStore';
+import { useToastStore } from '@react-app/stores';
 
 const MINUTE = 60 * 1000;
 
