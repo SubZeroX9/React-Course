@@ -31,7 +31,7 @@ export default function Registration() {
           phone: z.string().regex(/^\+?[\d\s-()]+$/, t('validation.phone.invalid')),
           age: z.number().min(18, t('validation.age.min', { min: 18 })).max(100),
           gender: z.enum(['male', 'female', 'other'], {
-            required_error: t('validation.gender.required'),
+            message: t('validation.gender.required'),
           }),
           country: z.string().min(1, t('validation.country.required')),
           bio: z
